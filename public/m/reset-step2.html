@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>重置密码-2</title>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+
+	<body>
+		<div id="login" class="login reset-step1">
+			<header class="relative"><span class="iconfont icon-left fl" onclick="history.back(-1);"></span>{{title[language]}}</header>
+			<section>
+				<div class="tabBody">
+					<div v-for="(item,index) in form" class="border" style="border: 0;">
+						<label for="get" style="display: block;width: auto;">{{item.label[language]}}</label>
+						<div class="mui-input-row mui-password" style="line-height: initial;">
+							<input v-model="item.value" type="password" class="mui-input-password" :placeholder="item.placeholder[language]" value="" />
+						</div>
+					</div>
+				</div>
+				<div class="third-part">
+					<button class="login-btn" @tap="resetPassword">{{loginButton[language]}}</button>
+				</div>
+			</section>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+		<script src="js/vue.min.js"></script>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/reset-step2.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

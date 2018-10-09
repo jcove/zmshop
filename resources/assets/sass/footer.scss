@@ -1,0 +1,71 @@
+.footer{
+  background-color: #2a2a2a;
+  color: white;
+  .container{
+    overflow: hidden;
+    .shop-rules{
+      float: left;
+      .rule{
+        float: left;
+        width: 200px;
+        line-height: 30px;
+        p{
+          text-align: center;
+          a{
+            color: white;
+          }
+        }
+      }
+    }
+    .shop-info{
+      float: left;
+       .subscribe{
+         width: 200px;
+       }
+      .qr{
+        text-align: center;
+        img{
+          max-width: 120px;
+        }
+
+      }
+      .tel{
+        width: 140px;
+        .phone{
+          text-align: center;
+          font-size: 24px;
+        }
+      }
+    }
+  }
+
+  .title{
+    line-height: 40px;
+    text-align: center;
+  }
+
+}
+.side-bar{
+  position: fixed;
+  right: 0;
+  bottom: 200px;
+  z-index: 9999;
+  a{
+    display: block;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    margin-top: 5px;
+    border-radius: 3px;
+    color: white;
+    background-color: #838383;
+    i{
+      font-size: 28px;
+    }
+    &:hover{
+      background-color: #3daae9;
+      color: white;
+    }
+  }
+}

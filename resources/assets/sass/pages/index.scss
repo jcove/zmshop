@@ -1,0 +1,32 @@
+.index-safe{
+  background-color: #F1F1F1;
+  padding-top: 40px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  ul{
+    overflow: hidden;
+  }
+  .item{
+    float: left;
+    width: 285px;
+    text-align:center;
+    .icon{
+      color: #cfa972;
+      border: 1px solid #cfa972;
+      background: white;
+      display: inline-block;
+      font-size: 28px;
+      border-radius: 25px;
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      font-weight: 600;
+      padding: 10px 0;
+      line-height: 30px;
+    }
+    .title{
+      font-size: 24px;
+      padding:10px;
+    }
+  }
+}

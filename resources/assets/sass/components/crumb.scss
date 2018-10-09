@@ -1,0 +1,12 @@
+.crumb{
+  overflow: hidden;
+  line-height: 30px;
+  padding-bottom: 0;
+  span{
+    color: #999;
+    padding: 5px;
+  }
+  .separator{
+    color: #333;
+  }
+}

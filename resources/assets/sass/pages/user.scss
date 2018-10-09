@@ -1,0 +1,84 @@
+.user-register-section,.user-login-section{
+  padding-top: 30px;
+  height: 60px;
+  overflow: hidden;
+  .logo-box{
+    width: 120px;
+    height: 60px;
+    float: left;
+    img{
+      width: 120px;
+      height: 60px;
+    }
+  }
+  .title{
+    height: 60px;
+    width: 900px;
+    text-align: center;
+    line-height: 60px;
+    font-size: 18px;
+    float: left;
+  }
+}
+
+.user-login{
+  background-color: #71ccfc;
+  min-height: 600px;
+  .right{
+    width: 400px;
+    margin-top: 130px;
+    img{
+      width: 400px;
+    }
+  }
+}
+.user-main{
+  overflow: hidden;
+  .user-menus{
+    float: left;
+    width: 189px;
+    background-color: #f1f1f1;
+    border: 1px solid #dddddd;
+    .item{
+      padding: 15px 10px;
+      position: relative;
+    }
+    .level-1{
+      font-size: 16px;
+      font-weight: 600;
+      padding-left: 50px;
+
+      &:first-child{
+        border-top: 0;
+      }
+      &:last-child{
+        border-bottom: 0;
+      }
+    }
+    .level-2{
+      padding-left: 70px;
+      a{
+        color: #999999;
+      }
+    }
+  }
+  .main{
+    float: left;
+    width: 900px;
+
+    .title{
+      padding:0 20px;
+      border-bottom: 3px solid #c3c3c3;
+      line-height: 50px;
+      height: 50px;
+      span{
+        border-bottom: 3px solid #35a0fc;
+        display: inline-block;
+        line-height: 48px;
+      }
+    }
+    .box{
+
+    }
+  }
+}

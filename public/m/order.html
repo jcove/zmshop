@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>我的订单</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+
+	<body>
+		<div id="order" class="orders" style="height: 100%;">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">{{pageTitle[language]}}</h1>
+			</header>
+			<div class="mui-content" style="height: 100%;">
+				<div id="slider" class="mui-slider" style="height: 100%;" @slide="changeTab($event)">
+					<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+						<a v-for="(item,index) in orderTabs.classify" class="mui-control-item" :class="activeState===index&&'mui-active'" :href="'#'+item.id">
+							{{item.title[language]}}
+						</a>
+					</div>
+					<div id="sliderProgressBar" class="mui-slider-progress-bar" style="width: 20%;"></div>
+					<div class="mui-slider-group" style="height: calc(100% - 40px);">
+						<div v-for="(item,index) in orderTabs.classify" :id="item.id" class="mui-slider-item mui-control-content" :class="activeState===index&&'mui-active'">
+							<div class="mui-scroll-wrapper">
+								<div class="mui-scroll">
+									<ul v-if="item.stores" class="mui-table-view">
+										<li v-for="itemin in item.stores" class="mui-table-view-cell" style="border-top: 0.06rem solid #F1F1F1;border-bottom: 0.03rem solid #F1F1F1;">
+											<a href="" class="iteminlink">
+												{{itemin.name}} <span class="mui-icon mui-icon-arrowright"></span>
+											</a>
+											<div v-for="(itemin2,index2) in itemin.trades">
+												<div class="clearfix  itemsin" :style="{borderBottomWidth:(index2===itemin.trades.length-1&&0)}">
+													<div class="x-col3 trade-img" :style="{backgroundImage:'url('+itemin2.img+')'}"></div>
+													<div class="x-col9">
+														<div class="clearfix">
+															<h4 class="fl">{{itemin2.title}}</h4>
+															<div class="fr tr">
+																<span>{{unit[language]+itemin2.unitprice}}</span><br /><span>x {{itemin2.numbers}}</span>
+															</div>
+														</div>
+														<p v-if="itemin.buttonIndex===4||itemin.buttonIndex===5" class="buttonstyle0 inline-block" @tap="tapButton('退款',itemin,index2)">{{returnBack[language]}}</p>
+													</div>
+												</div>
+											</div>
+											<div class="tr" style="padding: 0 0 0.1rem;border-bottom: 1px solid #F1F1F1;margin-bottom: 0.1rem;">
+												<span style="padding-right: 0.2rem;">{{tradeText[0][language]+itemin.numbers+tradeText[1][language]}}</span>
+												<span>{{tradeText[2][language]+':'}}</span><span class="pricecolor">{{unit[language]+itemin.totalPrice}}</span>
+											</div>
+											<div class="tr">
+												<span v-for="(itembtn,i) in buttons[itemin.buttonIndex]" :class="'buttonstyle'+i" @tap="tapButton(itembtn.name[language],itemin)">{{itembtn.name[language]}}</span>
+											</div>
+										</li>
+									</ul>
+									<div v-else class="mui-loading">
+										<div class="mui-spinner"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--<div id="item3mobile" class="mui-slider-item mui-control-content">
+							<div id="scroll3" class="mui-scroll-wrapper">
+								<div class="mui-scroll">
+									<div class="mui-loading">
+										<div class="mui-spinner">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>-->
+					</div>
+				</div>
+			</div>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/order.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

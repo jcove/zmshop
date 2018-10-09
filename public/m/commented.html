@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>意见反馈</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+
+	<body>
+		<div id="comment" class="comment" style="height: 100%;">
+			<header class="mui-bar mui-bar-nav bgwhite">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">{{pageTitle[language]}}</h1>
+				<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" @tap="submitComment">{{submitBtn[language]}}</button>
+			</header>
+			<div class="mui-content" style="height: 100%;">
+				<div class="mui-input-row" style="padding: 0.2rem;">
+					<!--<p>{{feedback}}</p>-->
+					<textarea rows="6" style="border: 1px solid rgba(0,0,0,.2);" :placeholder="feedback[language]" v-model="commentValue"></textarea>
+				</div>
+			</div>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#comment',
+				data: {
+					language:localStorage.choose,
+					pageTitle: ['意见反馈','Feedback','意見のフィードバック'],
+					feedback: ['您的意见对我非常重要，我们会不断的优化和改善，努力为您我带来更好的体验， 谢谢！','Your opinion is very important to me. We will constantly optimize and improve, and strive to bring better experience to you and me. Thank you!','あなたのご意见は私にとって非常に重要で、私达の継続的な改善と改善、努力してあなたのためにもっと良い経験を持って、ありがとうございます!'],
+					commentValue: '',
+					Axios:null,
+					submitBtn:['提交','submit','さしだ·す'],
+					toastTips1: ['请先登陆', 'Please login first', '先に登録してください'],
+					toastTips2: ['请输入您的宝贵意见', 'Please input your valuable comments', '貴重なご意見を入力して下さい。'],
+					toastTips3: ['提交成功', 'Submitted successfully', '成功を収める。'],
+				},
+				mounted: function() {
+					var that=this;
+					document.getElementById('startLoading').style.display='none';
+					if(!sessionStorage.user){
+						mui.toast(that.toastTips1[that.language]);
+						setTimeout(function () {
+							mui.openWindow({
+								url:'login.html',
+								id:'login'
+							})
+						},3000)
+					}
+					mui.init({
+						swipeBack: false
+					});
+					var that = this;
+					this.Axios = axios.create({
+						baseURL: 'http://demo2.ruanwe.com/',
+						timeout: 5000,
+						headers: {
+							'X-Requested-With': 'XMLHttpRequest'
+						}
+					});
+				},
+				methods: {
+					submitComment: function() {
+						var that=this;
+						if(!this.commentValue){
+							mui.toast(that.toastTips2[that.language]);
+						}
+						this.Axios.post('api/suggestion',{
+							api_token:sessionStorage.user,
+							content:that.commentValue
+						}).then(function (r) {
+							console.log(r);
+							mui.toast(that.toastTips3[that.language]);
+							that.commentValue='';
+						}).catch(function (r) {
+							console.log(r);
+						});
+					}
+				}
+			});
+		</script>
+	</body>
+
+</html>

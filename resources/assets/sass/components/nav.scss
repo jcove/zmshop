@@ -1,0 +1,29 @@
+.nav-bar{
+  background-color: $navbar-default-bg;
+
+  .container{
+    padding-bottom: 0px;
+    position: relative;
+  }
+  ul{
+    overflow: hidden;
+  }
+  .nav-item{
+    padding: 15px 20px;
+    float: left;
+    &:first-child{
+      background-color: rgba(255,255,255,0.3);
+      width: 150px;
+      text-align: center;
+      cursor: pointer;
+    }
+    a{
+      color: white;
+      font-size: 16px;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+
+  }
+}

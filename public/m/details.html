@@ -1,0 +1,395 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>商品详情</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/shopingcart.css" />
+		<style type="text/css">
+			.mui-preview-image.mui-fullscreen {
+				position: fixed;
+				z-index: 1000;
+				background-color: #000;
+			}
+			
+			.mui-preview-header,
+			.mui-preview-footer {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				z-index: 10;
+			}
+			
+			.mui-preview-header {
+				height: 44px;
+				top: 0;
+			}
+			
+			.mui-preview-footer {
+				height: 50px;
+				bottom: 0px;
+			}
+			
+			.mui-preview-header .mui-preview-indicator {
+				display: block;
+				line-height: 25px;
+				color: #fff;
+				text-align: center;
+				margin: 15px auto 4;
+				width: 70px;
+				background-color: rgba(0, 0, 0, 0.4);
+				border-radius: 12px;
+				font-size: 16px;
+			}
+			
+			.mui-preview-image {
+				display: none;
+				-webkit-animation-duration: 0.5s;
+				animation-duration: 0.5s;
+				-webkit-animation-fill-mode: both;
+				animation-fill-mode: both;
+			}
+			
+			.mui-preview-image.mui-preview-in {
+				-webkit-animation-name: fadeIn;
+				animation-name: fadeIn;
+			}
+			
+			.mui-preview-image.mui-preview-out {
+				background: none;
+				-webkit-animation-name: fadeOut;
+				animation-name: fadeOut;
+			}
+			
+			.mui-preview-image.mui-preview-out .mui-preview-header,
+			.mui-preview-image.mui-preview-out .mui-preview-footer {
+				display: none;
+			}
+			
+			.mui-zoom-scroller {
+				position: absolute;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				-webkit-box-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				-webkit-backface-visibility: hidden;
+			}
+			
+			.mui-zoom {
+				-webkit-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+			}
+			
+			.mui-slider .mui-slider-group .mui-slider-item img {
+				width: 100%;
+				height: auto;
+				max-width: 100%;
+				/*max-height: 100%;*/
+			}
+			
+			.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+				width: 100%;
+			}
+			
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+				display: inline-table;
+			}
+			
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			
+			.mui-preview-loading {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			
+			.mui-preview-loading.mui-active {
+				display: block;
+			}
+			
+			.mui-preview-loading .mui-spinner-white {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -25px;
+				margin-top: -25px;
+				height: 50px;
+				width: 50px;
+			}
+			
+			.mui-preview-image img.mui-transitioning {
+				-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+				transition: transform 0.5s ease, opacity 0.5s ease;
+			}
+			
+			@-webkit-keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			
+			@-webkit-keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			
+			@keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			
+			p img {
+				max-width: 100%;
+				height: auto;
+			}
+			
+			#scoreControl .mui-control-item.mui-active {
+				border-bottom: 0;
+			}
+			
+			.popoverimg {
+				width: 100%;
+				height: 0;
+				padding-bottom: 100%;
+				background: no-repeat center center;
+				background-size: cover;
+			}
+			
+			#tabbar-with-market .title {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				font-size: 0.18rem;
+				color: #3D3D3D;
+			}
+			
+			.radioitem {
+				margin: 0 !important;
+				display: inline-block !important;
+				padding: 5px 12px !important;
+				background-color: #F0F0F0;
+				border-radius: 4px;
+				font-size: 0.14rem;
+				margin-right: 5px !important;
+				color: #333333;
+			}
+			
+			.mui-table-view-cell:after {
+				height: 0 !important;
+			}
+			
+			.mui-table-view-radio .mui-table-view-cell.mui-selected .mui-navigate-right:after {
+				content: '';
+			}
+			
+			.mui-table-view-cell.mui-selected a {
+				background-color: #FFF3F3;
+				color: #FF6363;
+			}
+			.details nav .mui-tab-item.collected{
+				color: #FF5555;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="details" class="shoping-cart details">
+			<header id="header" class="mui-bar mui-bar-transparent clearfix">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: white;"></a>
+			</header>
+			<nav class="mui-bar mui-bar-tab">
+				<a id="kefu" class="mui-tab-item mui-active" href="/">
+					<span class="mui-icon iconfont icon-kefu"></span>
+					<span class="mui-tab-label">{{barTabs[0].title[language]}}</span>
+				</a>
+				<a class="mui-tab-item" href="#" :class="collected&&'collected'" @tap="toggleCollect">
+					<span class="mui-icon iconfont" :class="collected?'icon-collected':'icon-collect'"></span>
+					<span class="mui-tab-label">{{barTabs[1].title}}</span>
+				</a>
+				<a class="mui-tab-item" href="#" @tap="linkToShopingCart">
+					<span class="mui-icon iconfont icon-chart"><span v-show="barTabs[2].num" class="mui-badge">{{barTabs[2].num}}</span></span>
+					<span class="mui-tab-label">{{barTabs[2].title[language]}}</span>
+				</a>
+				<a class="mui-tab-item" href="#tabbar-with-market" style="background-color: #DC4F4F;">
+					<span class="mui-tab-label">{{barTabs[3].title[language]}}</span>
+				</a>
+			</nav>
+			<div id="pullrefresh" class="mui-content">
+				<div class="mui-scroll">
+					<!--轮播图片-->
+					<div id="slider" class="mui-slider" :style="{height: windowWidth}">
+						<div class="mui-slider-group" style="height: 100%;">
+							<div v-for="item in tradeDetail.slides" class="mui-slider-item" style="height: 100%;overflow: hidden;display: flex;justify-content: center;align-items: center;">
+								<img :src="item.img" data-preview-src="" data-preview-group="1">
+							</div>
+						</div>
+						<div class="mui-slider-indicator">
+							<div v-if="tradeDetail.slides.length>1" v-for="(item,index) in tradeDetail.slides" class="mui-indicator"></div>
+						</div>
+					</div>
+					<!--商品信息-->
+					<div class="mui-card" style="margin: 2px 0;box-shadow: none;">
+						<div class="mui-card-content">
+							<div class="mui-card-content-inner">
+								<p class="price">{{unit[language]+tradeDetail.price}}</p>
+								<p class="title">{{tradeDetail.title}}</p>
+								<div class="mui-row tips">
+									<div class="mui-col-sm-4 mui-col-xs-4">{{tradeDetail.tips[0]}}</div>
+									<div class="mui-col-sm-4 mui-col-xs-4 tc">{{tradeDetail.tips[1]}}</div>
+									<div class="mui-col-sm-4 mui-col-xs-4 tr">{{store[language]+':'+tradeDetail.store}}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mui-card" style="margin: 2px 0;">
+						<div class="mui-card-content">
+							<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary" style="border-bottom: 1px solid #e8e8e8;">
+								<a class="mui-control-item mui-active" href="#item1">{{detailTabs[0][language]}}</a>
+								<a class="mui-control-item" href="#item2">{{detailTabs[1][language]}}</a>
+								<a class="mui-control-item" href="#item3">{{detailTabs[2][language]}}</a>
+							</div>
+							<div class="detail-contentbox">
+								<div id="item1" class="mui-control-content mui-active" style="background-color: #F1F1F1;">
+									<div class="title-style0"><span><span class="iconfont icon-tupian"></span> {{detailTip[language]}}</span>
+									</div>
+									<div v-html="tradeDetail.content"></div>
+									<!--精选商品-->
+									<div class="empty-cart tc" style="padding-top: 22px;">
+										<p class="choiceness"><span>{{featured[language]}}</span></p>
+									</div>
+									<ul class="mui-row mui-clearfix" style="background-color: inherit; padding:0 10px 60px;">
+										<li v-for="item in trades" class="mui-col-sm-6 mui-col-xs-6" style="padding: 8px;">
+											<a class="tradebox" @tap="linkToDetails(item.link)">
+												<div class="tradeimg" :style="{backgroundImage:'url('+item.img+')'}"></div>
+												<p class="title">{{item.title}}</p>
+												<div class="clearfix">
+													<p class="price fl">{{unit[language]+item.price}}</p>
+													<!--<p class="sales fr">{{monthSale+item.monthSale+pcs}}</p>-->
+												</div>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<div id="item2" class="mui-control-content" v-html="tradeDetail.instruction">
+
+								</div>
+								<div id="item3" class="mui-control-content mui-scroll-wrapper">
+									<p style="padding: 15px 7.5px 0 15px;">{{comments.title[language]}}</p>
+									<dl class="mui-table-view">
+										<dd v-for="item in comments.data" class="mui-table-view-cell">
+											<div class="user-img" :style="{backgroundImage: item.img}"></div>
+											<span class="user-name">{{item.name}}</span>
+											<p class="user-discuss">{{item.content}}</p>
+										</dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div id="tabbar-with-market" class="mui-popover mui-popover-action mui-popover-bottom">
+				<div class="mui-row" style="padding:8px;background-color: white;font-size: 0;">
+					<div class="inline-block" style="padding: 8px;width: 33.33%;">
+						<div class="popoverimg" :style="{backgroundImage:'url('+tradeDetail.slides[0].img+')'}">
+							<img :src="tradeDetail.slides[0].img" data-preview-src="" data-preview-group="2" style="width: 100%;">
+						</div>
+					</div>
+					<div class="inline-block" style="width: 66.67%;padding: 8px;vertical-align: bottom;">
+						<div class="tips">
+							<p class="title">{{tradeDetail.title}}</p>
+							<p class="price">{{unit[language]+tradeDetail.price}}</p>
+							<p class="lightgray" style="font-size: 0.14rem;">{{store[language]+':'+tradeDetail.store}}</p>
+							<p style="color: #333;font-size: 0.14rem;">
+								{{check[language]+':'}}
+								<span v-for="item in tradeDetail.specifications" style="padding-left: 5px;">{{'"'+item.name+'"'}}</span>
+							</p>
+						</div>
+					</div>
+					<div v-for="(item,index) in tradeDetail.specifications" style="padding: 8px;">
+						<div class="title" style="padding-bottom: 8px;">
+							{{item.name}}
+						</div>
+						<ul class="mui-table-view-radio">
+							<li v-for="(item1,i) in item.items" @tap="checkRadio(index,i)" class="mui-table-view-cell" style="display: inline-block;padding: 0;line-height: 1;">
+								<a class="mui-navigate-right radioitem">
+									{{item1.value}}
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="mui-input-row">
+						<label style="font-size: 0.18rem;padding-left: 8px;">{{quantity[language]}}</label>
+						<div class="mui-numbox" data-numbox-min='1'>
+							<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+							<input class="mui-input-numbox" type="number" v-model="tradeDetail.num" />
+							<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+						</div>
+					</div>
+					<div style="padding-top: 1rem;">						
+						<button type="button" @tap="addToCart" class="mui-btn mui-btn-danger mui-btn-block" style="font-size: 0.18rem;">{{addCartButton[language]}}</button>
+					</div>
+				</div>
+			</div>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+		<script id="qd2852155350679e8f5c2e9c8f5b65f3c4681166637d" src="https://wp.qiye.qq.com/qidian/2852155350/679e8f5c2e9c8f5b65f3c4681166637d" charset="utf-8" async defer></script>
+		<script src="js/vue.min.js"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.zoom.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.previewimage.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/details.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

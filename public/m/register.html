@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>注册</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+
+	<body>
+		<div id="login" class="login register">
+			<header>{{title[language]}}</header>
+			<section>
+				<div class="mui-input-group">
+					<!--<div class="mui-input-row" v-for="(item,index) in form" :class="(index===form.length-1)?'border0':'border'">
+						<label for="get">{{item.label}} ：</label><input v-model="item.value" :type="item.type" class="mui-input-clear" :placeholder="(index===form.length-1?'再次输入':'请输入')+item.label" value="" />
+					</div>-->
+					<div :class="item.rowClass" v-for="(item,index) in form" :class="(index===form.length-1)?'border0':'border'">
+						<label for="get" style="padding-left: 0;white-space: nowrap;">{{item.label[language]}} ：</label>
+						<input :type="item.type" v-model="item.value" :class="item.inputClass" :placeholder="item.label[language]" value="" />
+						<span class="get-code" :class="!canGetcode&&'disabled'" @click="getPhoneCode($event)" v-if="index===2">{{getCode[language]}}</span>
+					</div>
+				</div>
+				<div class="third-part">
+					<div class="mui-checkbox mui-left" style="padding-top: 10px;">
+						<input v-model="isReadDeal" type="checkbox" id="isread" value="" style="left: 0;top: 15px;" /><label style="line-height: 38px;padding-right: 0;white-space: nowrap;padding-left: 30px;" for="isread"><span>{{agree[language]}}</span><span class="link">{{dealLink[language]}}</span></label>
+					</div>
+					<button class="login-btn" @tap="reg">{{loginButton[language]}}</button>
+					<div class="clearfix">
+						<a class="fl" href="#" @click="linkToLogin">{{button1[language]}}</a>
+						<a id="kefu" class="fr" href="#">{{button2[language]}}</a>
+					</div>
+				</div>
+			</section>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+		<script id="qd2852155350679e8f5c2e9c8f5b65f3c4681166637d" src="https://wp.qiye.qq.com/qidian/2852155350/679e8f5c2e9c8f5b65f3c4681166637d" charset="utf-8" async defer></script>
+		<script src="js/vue.min.js"></script>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper-4.2.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/register.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

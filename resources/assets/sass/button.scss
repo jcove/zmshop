@@ -1,0 +1,16 @@
+.btn{
+  background-color: $brand-primary;
+  border: 0;
+  padding: 12px 20px;
+  color: white;
+
+}
+.el-button {
+  border-radius: 0!important;
+}
+.el-button--text {
+  color: $default-color;
+}
+.el-button--primary {
+  background-color: $default-color;
+}

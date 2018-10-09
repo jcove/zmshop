@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人信息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="css/picker.css"/>
+	</head>
+
+	<body class="mui-fullscreen">
+		<div id="personalCenter" class="personal-center">
+			<!--页面主结构开始-->
+			<div id="app" class="mui-views">
+				<div class="mui-view">
+					<div class="mui-navbar"></div>
+					<div class="mui-pages"></div>
+				</div>
+			</div>
+			<!--页面主结构结束-->
+			<!--单页面开始-->
+			<div id="setting" class="mui-page">
+				<!--页面标题栏开始-->
+				<div class="mui-navbar-inner mui-bar mui-bar-nav">
+					<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+					<h1 class="mui-center mui-title">{{pageTitle[language]}}</h1>
+				</div>
+				<!--页面主内容区开始-->
+				<div class="mui-page-content">
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll" style="height: 100%;">
+							<ul class="mui-table-view mui-table-view-chevron">
+								<li class="mui-table-view-cell mui-media">
+									<a class="mui-navigate-right relative" style="line-height: 42px;">
+										{{head.label[language]}}
+										<img class="mui-media-object mui-pull-right head-img" id="head-img" :src="head.value||'img/trade.png'">
+										<input id="upload_file"  name="file" accept="image/*" class="fileimg" type="file" @change="updateHeadImage" />
+									</a>
+								</li>
+								<li class="mui-table-view-cell">
+									<a href="#setNike" class="mui-navigate-right">
+										{{nike.label[language]}}
+										<span class="mui-pull-right" v-html="nike.value"></span>
+									</a>
+								</li>
+								<!--<li class="mui-table-view-cell">
+									<a :href="!name.value&&'#setName'" class="mui-navigate-right">
+										{{name.label}}
+										<span class="mui-pull-right" v-html="name.value?name.value:name.noSetValue"></span>
+									</a>
+								</li>-->
+								<li class="mui-table-view-cell">
+									<a class="mui-navigate-right">
+										{{phoneNumber.label[language]}}
+										<span class="mui-pull-right" v-html="phoneNumber.value?phoneNumber.value:phoneNumber.noSetValue"></span>
+									</a>
+								</li>
+								<li class="mui-table-view-cell">
+									<a href="#resetPassword" class="mui-navigate-right">
+										{{password.label[language]}}
+										<span class="mui-pull-right">{{password.reset[language]}}</span>
+									</a>
+								</li>
+							</ul>
+							<ul class="mui-table-view loginout">
+								<li class="mui-table-view-cell" style="text-align: center;">
+									<a @tap="loginOut">{{loginout[language]}}</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!--页面主内容区结束-->
+			</div>
+			<!--单页面结束-->
+			<!--设置昵称-->
+			<div id="setNike" class="mui-page">
+				<div class="mui-navbar-inner mui-bar mui-bar-nav">
+					<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					    <span class="mui-icon mui-icon-left-nav"></span>
+				    </button>
+					<h1 class="mui-center mui-title">{{set[language]+nike.label[language]}}</h1>
+				</div>
+				<div class="mui-page-content">
+					<div class="mui-content-padded">
+						<input class="form-name" type="text" :placeholder="nike.placeHolder" v-model="nike.value">
+						<button type="button" class="mui-btn mui-btn-warning mui-btn-block save-button" :class="save.disable&&'disable'" @tap="updateNike">
+							{{save.text[language]}}
+							<div class="absolute"><div class="mui-spinner"></div></div>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!--设置姓名-->
+			<!--<div id="setName" class="mui-page">
+				<div class="mui-navbar-inner mui-bar mui-bar-nav">
+					<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					    <span class="mui-icon mui-icon-left-nav"></span>
+				    </button>
+					<h1 class="mui-center mui-title">{{set+name.label}}</h1>
+				</div>
+				<div class="mui-page-content">
+					<div class="mui-content-padded">
+						<input class="form-name" type="text" :placeholder="name.placeHolder" v-model="name.value">
+						<button type="button" class="mui-btn mui-btn-warning mui-btn-block save-button" :class="save.disable&&'disable'" @tap="updateName">
+							{{save.text}}
+							<div class="absolute"><div class="mui-spinner"></div></div>
+						</button>
+					</div>
+				</div>
+			</div>-->
+			<!--设置手机号码-->
+			<!--<div id="setPhoneNumber" class="mui-page">
+				<div class="mui-navbar-inner mui-bar mui-bar-nav">
+					<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					    <span class="mui-icon mui-icon-left-nav"></span>
+				    </button>
+					<h1 class="mui-center mui-title">{{set+phoneNumber.label}}</h1>
+				</div>
+				<div class="mui-page-content">
+					<div class="mui-content-padded">
+						<input class="form-name" type="text" :placeholder="phoneNumber.placeHolder" v-model="phoneNumber.value">
+						<button type="button" class="mui-btn mui-btn-warning mui-btn-block save-button" :class="save.disable&&'disable'" @tap="updatePhoneNumber">
+							{{save.text}}
+							<div class="absolute"><div class="mui-spinner"></div></div>
+						</button>
+					</div>
+				</div>
+			</div>-->
+			<!--重置密码-->
+			<div id="resetPassword" class="mui-page">
+				<div class="mui-navbar-inner mui-bar mui-bar-nav">
+					<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					    <span class="mui-icon mui-icon-left-nav"></span>
+				    </button>
+					<h1 class="mui-center mui-title">{{reset[language]+password.label[language]}}</h1>
+				</div>
+				<div class="mui-page-content">
+					<div class="mui-content-padded">
+						<div class="mui-input-row mui-password">
+							<input class="form-name mui-input-password" type="password" :placeholder="password.oldplaceHolder[language]" v-model="password.oldvalue" autocomplete="off">
+						</div>
+						<div class="mui-input-row mui-password">
+							<input class="form-name mui-input-password" type="password" :placeholder="password.placeHolder[language]" v-model="password.value" autocomplete="off">
+						</div>
+						<div class="mui-input-row mui-password">
+						    <input class="form-name mui-input-password" type="password" :placeholder="password.placeHolder2[language]" v-model="password.value2" autocomplete="off">
+						</div>
+						<button type="button" class="mui-btn mui-btn-warning mui-btn-block save-button" :class="save.disable&&'disable'" @tap="updatePassword">
+							{{save.text[language]}}
+							<div class="absolute"><div class="mui-spinner"></div></div>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+	</body>
+	<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src='js/feedback.js'></script>-->
+	<script src="js/personal-center.js" type="text/javascript" charset="utf-8"></script>
+
+</html>

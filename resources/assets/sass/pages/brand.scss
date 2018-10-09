@@ -1,0 +1,19 @@
+.page-brand{
+  overflow: hidden;
+  .categories{
+    float: left;
+    padding-top: 30px;
+  }
+  .brand{
+    width: 861px;
+    float: left;
+    padding: 15px;
+    margin-top: 15px;
+    .name{
+      text-align: center;
+      font-size: 18px;
+      line-height: 2;
+    }
+  }
+
+}

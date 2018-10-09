@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>登录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/swiper-4.2.2.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+
+	<body>
+		<div id="login" class="login">
+			<header>{{title[language]}}</header>
+			<section>
+				<div class="tabHeader clearfix">
+					<div v-for="(item,index) in tab" :class="item.active&&'active'" class="item x-col6" @click="changeTab(index)">
+						{{item.title[language]}}
+					</div>
+					<div class="lineBottom" :class="tab[0].active&&'active'"></div>
+				</div>
+				<div class="tabBody" style="height: 1.2rem;">
+					<ul :class="tab[0].active&&'active'">
+						<li v-for="(item,index) in tab" class="mui-input-group">
+							<div class="border mui-input-row">
+								<label for="tel">{{item.label1[language]}} ：</label>
+								<input class="mui-input-clear" v-model="item.phoneNumber" type="tel" :placeholder="item.placeholder1[language]" value="" />
+							</div>
+							<div class="border0 mui-input-row mui-password">
+								<label for="get">{{item.label2[language]}} ：</label>
+								<input :class="index&&'mui-input-password'" v-model="item.receiveCode" :type="index?'password':'text'" :placeholder="item.placeholder2[language]" value="" />
+							</div>
+							<span @tap="getPhoneCode($event)" :class="[disabledGet&&'disabled',tab[0].active&&'active']">{{getPassword[language]}}</span>
+						</li>
+					</ul>
+				</div>
+				<div class="third-part">
+					<button class="login-btn" @keydown.enter="logIn" @tap="logIn">{{loginButton[language]}}</button>
+					<div class="clearfix">
+						<a class="fl" href="#" @click="linkToRegister">{{button1[language]}}</a>
+						<a class="fr" href="#" @click="linkToResetStep1">{{button2[language]}}</a>
+					</div>
+					<!--<div class="line-through">
+						<span>{{thirdPartyLogin}}</span>
+					</div>
+					<div class="clearfix tc">
+						<div class="x-col4">
+							<a href="">
+								<img src="img/QQ.png" /><br />
+								<span>{{loginButton1}}</span>
+							</a>
+						</div>
+						<div class="x-col4">
+							<a href="">
+								<img src="img/weixin.png" /><br />
+								<span>{{loginButton2}}</span>
+							</a>
+						</div>
+						<div class="x-col4">
+							<a href="">
+								<img src="img/zhi.png" /><br />
+								<span>{{loginButton3}}</span>
+							</a>
+						</div>
+					</div>-->
+				</div>
+			</section>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+		<script src="js/vue.min.js"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/swiper-4.2.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/login.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+
+</html>

@@ -1,0 +1,60 @@
+.my-collections{
+  padding: 20px;
+  .title{
+    background-color: #e6e6e6;
+    overflow: hidden;
+    .cover,.name,.date,.operate{
+      float: left;
+      text-align: center;
+      overflow: hidden;
+      width: 100px;
+    }
+    .cover{
+      width: 160px;
+    }
+    .name{
+      width: 240px;
+    }
+    .date{
+      width: 180px;
+    }
+
+  }
+  .list{
+    border: 1px solid #35a0fc;
+    overflow: hidden;
+    padding: 15px;
+    ul{
+      overflow: hidden;
+      li{
+        float: left;
+        padding: 15px 5px;
+        .cover{
+          width: 160px;
+          img{
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: auto;
+          }
+          float: left;
+        }
+        .name,.date,.operate{
+          float: left;
+          text-align: center;
+          overflow: hidden;
+          line-height: 100px;
+        }
+        .name{
+          width: 240px;
+        }
+        .date{
+          width: 180px;
+        }
+        .operate{
+          width: 100px;
+        }
+      }
+    }
+  }
+}

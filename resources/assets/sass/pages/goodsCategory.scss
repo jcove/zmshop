@@ -1,0 +1,134 @@
+.page-goods-category{
+  overflow: hidden;
+  .left{
+    float: left;
+    .goods-category-tree{
+      border:1px solid #e8e8e8;
+      border-bottom: 0;
+      width: 237px;
+      .title{
+        font-size: 16px;
+        padding: 25px 5px;
+        font-weight: 600;
+        border-bottom: 1px solid #e8e8e8;
+        background-color: #f9f9f9;
+      }
+      .category{
+        overflow: hidden;
+        .name{
+          font-size: 16px;
+          font-weight: 600;
+          padding: 25px;
+          border-bottom: 1px solid #e8e8e8;
+          background-color: #f9f9f9;
+        }
+        .subs{
+          ul{
+            .item{
+              float: left;
+              line-height: 46px;
+              border-right:1px solid #e8e8e8;
+              border-bottom: 1px solid #e8e8e8;
+              width: 118px;
+              text-align: center;
+              font-weight: 600;
+              &:nth-child(even){
+                border-right: 0;
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  .main{
+    width: 861px;
+    float: left;
+    padding:10px 20px;
+    .crumb{
+      width: 900px !important;
+    }
+    .filters{
+      border:1px solid #e8e8e8;
+      .filter{
+        border-bottom:1px solid #e8e8e8;
+        padding: 15px 0;
+        overflow: hidden;
+        .name{
+          float: left;
+        }
+        .values{
+          float: left;
+          width: 700px;
+        }
+        .name,.value{
+          color: #999999;
+          display: inline-block;
+          min-width: 100px;
+          text-align: center;
+          padding: 5px 10px;
+          
+        }
+        .value{
+          color: #474747;
+        }
+      }
+
+    }
+    .goods-list{
+      margin-top: 20px;
+      .sort-bar{
+        background-color: #f9f9f9;
+        border:1px solid #e8e8e8;
+        a{
+          border-right: 1px solid #e8e8e8;
+          display: inline-block;
+          line-height: 30px;
+          padding: 10px;
+          text-align: center;
+          width: 100px;
+          &:last-child{
+            border-right: 0;
+          }
+        }
+        .active{
+          color: red;
+        }
+      }
+    }
+  }
+}
+.cate-goods-list{
+  overflow: hidden;
+  .list{
+    overflow: hidden;
+  }
+  .item{
+    float: left;
+    width: 200px;
+    border: 1px solid #f8f8f8;
+    margin-right: 15px;
+    margin-top: 15px;
+    height: 300px;
+    &:nth-child(4n){
+      margin-right: 0;
+    }
+    .cover{
+      height: 200px;
+      img{
+        max-width:100%;
+      }
+    }
+    .price{
+      padding: 5px;
+      span{
+        color: #c90418;
+      }
+    }
+    .name{
+      padding: 5px;
+    }
+  }
+}

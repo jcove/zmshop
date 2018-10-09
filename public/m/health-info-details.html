@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>健康资讯详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+
+	<body>
+		<div id="healthInfoDetails" class="comment health-info-details" style="height: 100%;">
+			<header class="mui-bar mui-bar-nav bgwhite">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">{{pageTitle}}</h1>
+			</header>
+			<div class="mui-content bgwhite" style="height: 100%;">
+				<div style="padding: 0.2rem 0.4rem;">
+					<h5 class="title">{{title}}</h5>
+					<p class="time">{{time}}</p>
+					<div class="content" v-html="content"></div>
+				</div>
+			</div>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#healthInfoDetails',
+				data: {
+					infoId:location.search.split('id=')[1],
+					pageTitle: '',
+					title: '',
+					img:'',
+					time: '',
+					content:''
+//					content: '<img src="img/news-details.jpg" style="width:100%"/><p>健康管理产业属于健康产业的四大基本产业群体之一，由三个大的基本服务模块构成，即健康检测与监测、健康评估与指导叙利亚当下的局势可以说是距离胜利仅差一步之遥，叙利亚全境基本已经全部得到解放，仅剩南部两省还在继续苦战当中。就现在的形势来看，仅剩的两省武装分子已经不足为惧，在孤立无援的情况下，武装分子战败只是时间问题，这一点不论是政府军还是武装分子都是十分心知肚明的，正因如此已经有武装分子开始向俄叙联军投降。健康管理产业属于健康产业的四大的基本服务模块构成，即健康检测与监测、健康评估与指导叙利亚当下的局势可以说是距离胜利仅差一步之遥，叙利亚全境基本已经全部得到解放，仅剩南部两省还在继续苦战当中。就现在的形势来看，仅剩的两省武装分子已经不足为惧，在孤立无援的情况下，武装分子战败只是时间问题，这一点不论是政府军还是武装分子都是十分心知肚明的，正因如此已经有武装分子开始向俄叙联军投降。</p>'
+				},
+				mounted: function() {
+					document.getElementById('startLoading').style.display='none';
+					mui.init({
+						swipeBack: false
+					});
+					var that = this;
+					this.Axios = axios.create({
+						baseURL: 'http://demo2.ruanwe.com/',
+						timeout: 5000,
+						headers: {
+							'X-Requested-With': 'XMLHttpRequest'
+						}
+					});
+					//获取文章列表
+					this.Axios.get('article/article/'+that.infoId, {
+//						params: {
+//							api_token: sessionStorage.user
+//						}
+					}).then(function(r) {
+						console.log(r);
+						that.title=r.data.data.title;
+						that.time=r.data.data.updated_at;
+						that.img=r.data.data.cover;
+						that.content=r.data.data.content;
+					}).catch(function(error) {
+						console.log(error);
+					});
+				}
+			});
+		</script>
+	</body>
+
+</html>

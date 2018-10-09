@@ -1,0 +1,76 @@
+.search-bar{
+  height: 80px;
+  padding: 20px 0;
+  overflow: hidden;
+  .search-adp{
+    width: 240px;
+    height: 80px;
+    img{
+      max-width: 100%;
+    }
+  }
+  .logo{
+    width: 240px;
+    img{
+      max-width: 100%;
+    }
+  }
+  .search-box{
+    width: 460px;
+    padding-top: 20px;
+    input{
+      border-radius: 0;
+    }
+    .keywords{
+      margin-top: 10px;
+      color: #999999;
+      a{
+        color: #606266;
+      }
+    }
+  }
+  .cart-box{
+    padding: 20px;
+    line-height: 40px;
+    .icon-cart{
+      color: #ffa800;
+      font-size: 24px;
+    }
+    span{
+      font-size: 22px;
+      color: #838383;
+    }
+  }
+  .app-download-box{
+    padding: 20px;
+    line-height: 40px;
+  }
+}
+.search-bar-fixed{
+  position: fixed;
+  top: 0;
+  background-color: $default-color;
+  width: 100%;
+  height: 60px;
+  display: none;
+  z-index: 1000;
+  .logo{
+    width: 190px;
+    img{
+      height: 60px;
+    }
+  }
+  .search-box{
+    width: 680px;
+    margin-top: 10px;
+    input{
+      height: 36px;
+      line-height: 36px;
+      font-size: 12px;
+    }
+    button{
+      height: 36px;
+      padding: 10px 20px;
+    }
+  }
+}

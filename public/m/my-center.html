@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>个人中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/use-rem.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/mui.poppicker.css" />
+		<link rel="stylesheet" type="text/css" href="css/picker.css"/>
+		<style type="text/css">
+			html,body{height: 100%;}
+		</style>
+	</head>
+
+	<body class="mui-fullscreen">
+		<div id="myCenter" class="my-center" style="height: 100%;">
+			<!--页面主结构开始-->
+			<div id="app" class="mui-views">
+				<div class="mui-view">
+					<!--<div class="mui-navbar"></div>-->
+					<div class="mui-pages" style="top: 0;"></div>
+				</div>
+			</div>
+			<!--页面主结构结束-->
+			
+			<!--单页面开始-->
+			<div id="setting" class="mui-page">
+				<!--页面标题栏开始-->
+				<!--<div class="mui-navbar-inner mui-bar mui-bar-nav">
+					<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					<span class="mui-icon mui-icon-left-nav"></span>
+				</button>
+					<h1 class="mui-center mui-title">{{pageTitle}}</h1>
+				</div>-->
+				<!--页面主内容区开始-->
+				<div class="mui-page-content">
+					<div class="mui-scroll-wrapper" style="overflow-y: auto;">
+						<div class="mui-scroll">
+							<ul class="mui-table-view mui-table-view-chevron" style="position: static;padding-bottom: 60px;">
+								<li class="mui-table-view-cell my-center-head">
+									<img class="headimg" :src="head.img"/>
+									<span v-if="userId">{{userName[language]}}<span>/</span><span @tap="loginOut">{{loginout[language]}}</span></span>
+									<span v-else>
+										<a :href="head.loginLink">{{head.login[language]}}</a><span>/</span><a :href="head.registLink">{{head.regist[language]}}</a>
+									</span>
+								</li>
+								<li class="mui-table-view-cell">
+									<a :href="order.link" class="mui-navigate-right">
+										{{order.title[language]}}
+										<span class="mui-pull-right"></span>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-row">
+									<div v-for="item in order.states" class="mui-col-xs-3 mui-col-sm-3">
+										<a :href="item.link">
+											<img :src="item.img"/>
+											<p>{{item.title[language]}}</p>
+										</a>
+									</div>
+								</li>
+								<li class="mui-table-view-cell mui-row menubox" style="padding-bottom: 5px;border-top: 5px solid #EFEFF4;border-bottom: 5px solid #EFEFF4;">
+									<div v-for="item in menuBox" class="mui-col-xs-3 mui-col-sm-3" style="margin-bottom: 0.1rem;">
+										<a :href="item.link">
+											<img :src="item.img"/>
+											<p>{{item.title[language]}}</p>
+										</a>
+									</div>
+								</li>
+								<li class="mui-table-view-cell">
+									<a href="commented.html" class="mui-navigate-right hide-icon">
+										{{opinion.label[language]}}
+									</a>
+								</li>
+								<li class="mui-table-view-cell">
+									<a href="#contactUs" class="mui-navigate-right hide-icon">
+										{{contactUs.label[language]}}
+									</a>
+								</li>
+								<li class="mui-table-view-cell">
+									<a href="#aboutUs" class="mui-navigate-right hide-icon">
+										{{aboutUs.label[language]}}
+									</a>
+								</li>
+							</ul>
+							
+						</div>
+					</div>
+				</div>
+				<!--页面主内容区结束-->
+			</div>
+			<!--单页面结束-->
+			<!--设置姓名-->
+			<div id="setName" class="mui-page">
+				<div class="mui-navbar-inner mui-bar mui-bar-nav">
+					<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left">
+					    <span class="mui-icon mui-icon-left-nav"></span>
+				    </button>
+					<h1 class="mui-center mui-title">{{set+name.label}}</h1>
+				</div>
+				<div class="mui-page-content">
+					<div class="mui-content-padded">
+						<input class="form-name" type="text" :placeholder="name.placeHolder" v-model="name.value">
+						<button type="button" class="mui-btn mui-btn-warning mui-btn-block save-button" :class="save.disable&&'disable'" @tap="updateName">
+							{{save.text}}
+							<div class="absolute"><div class="mui-spinner"></div></div>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!--设置手机号码-->
+			<!--<div id="setOpinion" class="mui-page">
+				
+			</div>
+			<div id="contactUs" class="mui-page">
+				
+			</div>-->
+			<footer class="clearfix footnav">
+				<div v-for="(item,index) in menu" class="x-col3" :class="index===3&&'active'">
+					<a :href="item.link">
+						<span class="mui-icon relative iconfont" :class="item.iconfont">
+							<span v-if="index===2&&cartNum" class="mui-badge">{{cartNum}}</span>
+						</span>
+						<p>{{item.title[language]}}</p>
+					</a>
+				</div>
+			</footer>
+			<div id="startLoading" class="mui-loading" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 2000;background-color: gainsboro;">
+				<div class="mui-spinner" style="margin-top: 120px;width: 32px;height: 32px"></div>
+			</div>
+		</div>
+	</body>
+	<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/mui.min.js "></script>
+	<script src="js/mui.view.js "></script>
+	<script src="js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/my-center.js" type="text/javascript" charset="utf-8"></script>
+
+</html>
