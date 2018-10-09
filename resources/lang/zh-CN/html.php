@@ -12,7 +12,7 @@ return [
     'login'                     =>  '登录',
     'logout'                    =>  '退出',
     'register'                  =>  '注册',
-    'cart'                      =>  '需求清单',
+    'cart'                      =>  '购物车',
     'app_download'              =>  '手机APP下载',
     'search'                    =>  '搜索',
     'subscribe_us'              =>  '关注我们',
@@ -26,13 +26,9 @@ return [
     'choose_payment'            =>  '选择支付方式',
     'product_guarantee'         =>  '正品保障' ,
     'brand_authorization'       =>  '品牌授权',
-    'drug_control_certification'=>  '药监认证',
     'privacy_packing'           =>  '隐私包装',
     'save_money'                =>  '天天省钱',
-    'drug_control_certification_text'=>  '获得国家资质，权威认证，值得信赖',
-    'brand_authorization_text'       =>  '秉承行业高标准，确保正品可信',
-    'privacy_packing_text'           =>  '保密包装，充分保护个人隐私',
-    'product_guarantee_text'    =>  '坚持“诚信为本”，保证所售均为正品',
+
     'operate'                   =>  [
         'collect'           =>  '收藏',
         'delete'            =>  '删除',
@@ -44,7 +40,6 @@ return [
         'goods_tips'        =>   '部分包装更换频繁，请以实物为准'
     ],
     'goods_brief'               =>  '商品介绍',
-    'instruction'               =>  '说明书',
     'comments'                  =>  '评价',
     'user'                      =>  [
         'register'      =>  '会员注册',

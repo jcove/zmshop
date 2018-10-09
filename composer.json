@@ -9,6 +9,10 @@
         "barryvdh/laravel-cors": "^0.11.0",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.3",
+        "jcove/laravel-ad": "^1.0",
+        "jcove/laravel-admin": "^1.0",
+        "jcove/laravel-article": "^1.0",
+        "jcove/laravel-promotion": "^1.0",
         "jcove/restful": "dev-master",
         "laramall/aliyun-dysms": "^1.0",
         "laravel/framework": "5.5.*",
@@ -16,7 +20,8 @@
         "mews/captcha": "^2.2",
         "paypal/rest-api-sdk-php": "^1.13",
         "spatie/laravel-permission": "^2.12",
-        "symfony/psr-http-message-bridge": "^1.0"
+        "symfony/psr-http-message-bridge": "^1.0",
+        "yansongda/laravel-pay": "^2.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -35,8 +40,7 @@
             "App\\": "app/"
         },
         "files":[
-            "app/helpers.php",
-            "packages/jcove/laravel-admin/src/helpers.php"
+            "app/helpers.php"
         ]
     },
     "autoload-dev": {

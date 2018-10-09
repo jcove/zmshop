@@ -16,10 +16,10 @@ export const goods = {
     shop_price:'价格',
     number:'数量',
     brand:'品牌',
-    add_cart:'提交需求',
-    'specification':'规格',
-    'store_out':'库存不足',
-    '$':'￥',
+    add_cart:'加入购物车',
+    specification:'规格',
+    store_out:'库存不足',
+    $:'￥',
     unit:'件',
     synthesized:'综合',
     price:'价格',
@@ -31,22 +31,21 @@ export const goods = {
 }
 
 export const user = {
-    'user_register_agreement':'《木子用户注册协议》',
-    'read_and_agree':'我已阅读并同意',
-    'password':'登录密码',
-    'password_confirmation':'确认密码',
-    'nick':'昵称',
-    'mobile_error':'手机号错误',
-    'must_agree_agreement':'请同意用户协议',
-    'registered':'恭喜您注册成功',
+    user_register_agreement:'《用户注册协议》',
+    read_and_agree:'我已阅读并同意',
+    password:'密码',
+    password_confirmation:'确认密码',
+    nick:'昵称',
+    mobile_error:'手机号错误',
+    must_agree_agreement:'请同意用户协议',
+    registered:'恭喜您注册成功',
     reset_success:'恭喜您重置成功',
-    'get_sms_code':'获取验证码',
-    'login_sms_code':'短信验证码登录',
-    'login_password':'密码登录',
-    'user.password':'密码',
+    get_sms_code:'获取验证码',
+    login_sms_code:'短信验证码登录',
+    login_password:'密码登录',
     mobile:'手机号',
-    'login':'登录',
-    'consignee':'收货人',
+    login:'登录',
+    consignee:'收货人',
     country:'国家',
     province:'省',
     city:'市',
@@ -55,7 +54,6 @@ export const user = {
     phone:'联系电话',
     is_default:'设为默认',
     china:'中国',
-    foreign:'海外',
     region:'所在地区',
     suggestion_text:'输入您的宝贵意见',
     username:'帐号',
@@ -74,28 +72,28 @@ export const user = {
 
 };
 export const cart ={
-    'add_success'   :   '添加成功',
-    'goods_price':'单价',
-    'goods_total':'小结',
-    'operate':'操作',
-    'goods_info':'商品信息',
-    'choose_num':'已选',
-    'total':'总价（不含运费）',
+    add_success   :   '添加成功',
+    goods_price:'单价',
+    goods_total:'小结',
+    operate:'操作',
+    goods_info:'商品信息',
+    choose_num:'已选',
+    total:'总价（不含运费）',
     consignee_info:'收货人信息',
-    'owe':'应付金额',
-    'sub_num':'共',
-    'consignmen':'送货清单',
-    'order_submit_success':'订单提交成功',
+    owe:'应付金额',
+    sub_num:'共',
+    consignmen:'送货清单',
+    order_submit_success:'订单提交成功',
     empty:'这里空空的哦',
     add_address:'添加收货地址',
     invalid:'失效'
 };
 export const common ={
-    'sms_send_success':'短信发送成功',
-    'save':'保存',
-    'success':'操作成功',
-    'operate':'操作',
-    'save_success':'保存成功',
+    sms_send_success:'短信发送成功',
+    save:'保存',
+    success:'操作成功',
+    operate:'操作',
+    save_success:'保存成功',
     submit_success:'提交成功',
     reset_success:'重置成功',
     please_login:'请先登录',
@@ -112,11 +110,11 @@ export const common ={
     confirm: '确认'
 };
 export const operate = {
-    'delete':'删除',
-    'check_all':'全选',
-    'settled':'结算',
-    'delete_checked':'删除选中',
-    'collect':'收藏',
+    delete:'删除',
+    check_all:'全选',
+    settled:'结算',
+    delete_checked:'删除选中',
+    collect:'收藏',
     edit:'修改',
     modify:'修改',
     choose_address:'选择收货地址',
@@ -129,7 +127,7 @@ export const operate = {
     upload:'上传'
 };
 export const order={
-    'all_order':'所有订单',
+    all_order:'所有订单',
     wait_pay:'待付款',
     wait_delivery:'待发货',
     wait_confirm:'待收货',
@@ -181,10 +179,6 @@ export const goods_category = {
 };
 export const brand= {
     relation_brand:'同类其他品牌'
-};
-export const welcome={
-    title_cn:'木子国际药品',
-    title_en:'HSE-INT NETWORK LIMITID'
 };
 export const validation = {
     please_input_email:'请填写邮箱',

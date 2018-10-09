@@ -74,8 +74,8 @@
                             <p class="text">@lang('html.brand_authorization')</p>
                         </li>
                         <li class="item">
-                            <p class="icon">监</p>
-                            <p class="text">@lang('html.drug_control_certification')</p>
+                            <p class="icon">隐</p>
+                            <p class="text">@lang('html.privacy_packing')</p>
                         </li>
                         <li class="item">
                             <p class="icon">免</p>
@@ -110,9 +110,6 @@
                 <div class="description panel" style="display: block">
                     <relations :goods_id="{{$data->id}}"></relations>
                     {!! $data->content !!}
-                </div>
-                <div class="instruction panel">
-                    {!! $data->instruction !!}
                 </div>
                 <div class="comments panel">
                     <goods-comments :goods_id="{{$data->id}}">

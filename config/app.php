@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'cn',
+    'locale' => 'zh-Cn',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'cn',
+    'fallback_locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,10 +176,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Jcove\Promotion\PromotionServiceProvider::class,
-        Jcove\Ad\AdServiceProvider::class,
-        Jcove\Article\ArticleServiceProvider::class,
-        Jcove\Admin\AdminServiceProvider::class,
+
         Mews\Captcha\CaptchaServiceProvider::class,
     ],
 

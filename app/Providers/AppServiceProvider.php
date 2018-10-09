@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Config;
+use App\Services\ConfigService;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -24,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
             $tmp = str_replace("\\", "", $tmp);
             Log::info($tmp . "\n\n\t");
         });
-        Config::config();
+        ConfigService::load();
         Schema::defaultStringLength(191);
 
     }
