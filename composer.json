@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "jcove/zmshop",
+    "description": "shop by laravel.",
+    "keywords": ["shop", "laravel"],
     "license": "MIT",
     "type": "project",
     "require": {
