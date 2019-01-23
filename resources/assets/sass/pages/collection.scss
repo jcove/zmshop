@@ -29,6 +29,11 @@
       li{
         float: left;
         padding: 15px 5px;
+        border-top: 1px solid #35A0FC;
+        width: 815px;
+        &:first-child{
+          border-top: none;
+        }
         .cover{
           width: 160px;
           img{
@@ -43,7 +48,7 @@
           float: left;
           text-align: center;
           overflow: hidden;
-          line-height: 100px;
+
         }
         .name{
           width: 240px;

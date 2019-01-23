@@ -35,14 +35,14 @@ class UserAddressController extends Controller
     }
 
     protected function beforeUpdate(){
-        $isDefault                  =   request()->is_default;
-        if($isDefault && $isDefault==1){
+        $isDefault                  =   request()->is_default ? 1:0;
+        if($isDefault && $isDefault==1 ){
             UserAddress::where(['user_id'=>Auth::id()])->whereNotIn('id',[$this->model->id])->update(['is_default'=>0]);
         }
         $this->model->user_id       =   Auth::id();
     }
     protected function prepareSave(){
-        $isDefault                  =   request()->is_default;
+        $isDefault                  =   request()->is_default ? 1:0;
         if($isDefault && $isDefault==1){
             UserAddress::where(['user_id'=>Auth::id()])->update(['is_default'=>0]);
         }
@@ -70,10 +70,17 @@ class UserAddressController extends Controller
         $result                         =   [];
         if(Auth::check()){
             $address                    =   $this->model->where(['user_id'=>Auth::id(),'is_default'=>UserAddress::IS_DEFAULT])->first();
-            $r                          =   Region::getByName($address->city);
-            $c                          =   Country::getByName($address->country);
-            $result['region']           =   $r;
-            $result['country']          =   $c;
+            if($address){
+                $r                          =   Region::getByName($address->city);
+                $c                          =   Country::getByName($address->country);
+                $result['region']           =   $r;
+                $result['country']          =   $c;
+            }else{
+                $r                          =   Region::find(1);
+                $c                          =   Country::find(1);
+                $result['region']           =   $r;
+                $result['country']          =   $c;
+            }
         }else{
             $r                          =   Region::find(1);
             $c                          =   Country::find(1);

@@ -17,24 +17,43 @@
             <div class="order" v-for="(order,index) in list">
                 <div class="order-sn">
                     <b>{{order.created_at}}</b> &nbsp;&nbsp;{{$t('order.order_sn')}}:{{order.order_sn}}
+                    &nbsp;&nbsp;{{$t('order.total')}} {{order.total_amount}}({{$t('order.shipping_fee')}} {{order.shipping_fee}})
                 </div>
                 <div class="order-info">
+                    <div class="goods-title">
+                        <div class="name">
+                            {{$t('goods.name')}}
+                        </div>
+                        <div class="price">
+                            {{$t('goods.price')}}
+                        </div>
+                        <div class="num">
+                            {{$t('goods.number')}}
+                        </div>
+                        <div class="total">
+                            {{$t('cart.goods_total')}}
+                        </div>
+                    </div>
                     <div class="order-goods">
                         <div class="goods" v-for="goods in order.order_goods">
                             <div class="cover">
+                                <a  :href="'goods/'+goods.goods_id" target="_blank">
                                 <img :src="goods.cover">
+                                </a>
                             </div>
                             <div class="name">
+                                <a  :href="'goods/'+goods.goods_id" target="_blank">
                                 <p>{{goods.goods_name}}</p>
+                                </a>
                                 <p v-if="goods.goods_spec_item_name">{{goods.goods_spec_item_name}}</p>
                             </div>
                             <div class="price">
-                                {{$t('goods.$')}}{{goods.final_price}}
+                                {{$t('goods.$')}}{{goods.price}}
                             </div>
                             <div class="num">
                                 {{goods.num}}
                             </div>
-                            <div class="after_service" @click="showReturnDialog(order.id,goods.goods_id,goods.goods_spec_item_id,goods.goods_name,goods.num*goods.final_price)">
+                            <div class="after_service" @click="showReturnDialog(order.id,goods.goods_id,goods.goods_spec_item_id,goods.goods_name,goods.num*goods.final_price)" v-if="!goods.is_return && order.order_status  > 2">
                                 {{$t('order.after_service')}}
                             </div>
                         </div>
@@ -42,11 +61,11 @@
 
                     <div class="info">
                         <div class="total">
-                            {{order.total_amount}}
+                            {{order.goods_amount}}
                         </div>
                         <div class="status">
                             <p>{{orderStatus(order.order_status)}}</p>
-                            <el-button type="text" @click="expressInfo(order.express_code,order.express_sn,order.express_name)">
+                            <el-button type="text" @click="expressInfo(order.id,order.express_code,order.express_sn,order.express_name)">
                                 {{$t('order.express_info')}}
                             </el-button>
                         </div>
@@ -56,7 +75,9 @@
                                 {{orderOperate(order.order_status)}}
                             </el-button>
 
-
+                            <el-button @click="cancelOrder(index,order)" v-if="order.order_status === 0" type="danger" style="margin-top: 10px;margin-left: 0">
+                                {{$t('order.cancel')}}
+                            </el-button>
                         </div>
                     </div>
                 </div>
@@ -72,7 +93,10 @@
             </el-pagination>
         </div>
         <el-dialog :visible.sync="expressDialogVisible">
-            <express :com="express_code" :post-id="express_sn" :express-name="express_name"></express>
+            <express :order-id="orderId"></express>
+        </el-dialog>
+        <el-dialog :visible.sync="deliveryDialogVisible" @closed="onDeliveryClose">
+            <delivery :order-id="orderId"></delivery>
         </el-dialog>
         <el-dialog :visible.sync="returnDialogVisible">
             <el-form>
@@ -114,6 +138,7 @@
     import returnGoodsApi from "../api/returnGoods";
     import config from "../config";
     import GoPayMessage from "./goPayMessage";
+    import Delivery from "./pc/delivery";
 
 
     const CREATED = 0;//待付款，创建
@@ -124,7 +149,9 @@
     const CANCELED    =   -1;
     const FINISH = 8;
     export default {
-        components: {GoPayMessage},
+        components: {
+            Delivery,
+            GoPayMessage},
         name: "order-list",
         data() {
             const that  =   this;
@@ -135,18 +162,19 @@
                 express_name:'',
                 expressDialogVisible:false,
                 showPayLoading: false,
+                deliveryDialogVisible: false,
                 orderId:0,
                 filters: [
                     {
                         label: this.$t('order.all_order'),
                         num: 0,
-                        active: false,
+                        active: true,
                         status:null
                     },
                     {
                         label: this.$t('order.wait_pay'),
                         num: 0,
-                        active: true,
+                        active: false,
                         status:CREATED
                     },
                     {
@@ -347,22 +375,24 @@
                 }
             },
             confirm(index, order) {
-                const that = this;
-                orderApi.confirm(order.id).then(response => {
-                    that.$message({
-                        message: that.$t('common.success'),
-                        type: 'success'
-                    });
-                    order.order_status = CONFIRMED;
-                    that.$set(that.list, index, order);
-                });
+               this.deliveryDialogVisible = true
+                this.orderId = order.id
             },
             pay(order) {
-                this.orderId = order.id;
-                this.showPayLoading = true;
+                location.href = config.baseApi+'/order/success/'+order.id;
             },
             comment(index, order) {
                 location.href = config.baseApi + '/order/comment/' + order.id;
+            },
+            cancelOrder(index, order){
+                orderApi.cancel(order.id).then(response => {
+                    this.$message({
+                        message: this.$t('common.success'),
+                        type: 'success'
+                    });
+                    order.order_status = CANCELED;
+                    this.$set(this.list, index, order);
+                });
             },
             getList() {
                 const that = this;
@@ -404,10 +434,11 @@
                    }
                 });
             },
-            expressInfo(code,sn,name){
-                this.express_code              =   code;
+            expressInfo(orderId,code,sn,name){
+                this.express_code               =   code;
                 this.express_sn                 =   sn;
                 this.express_name               =   name;
+                this.orderId                    =   orderId;
                 this.expressDialogVisible       =   true;
             },
             showReturnDialog(orderId,goodsId,specId,goodsName,money){
@@ -436,6 +467,18 @@
                         this.returnForm.reason = '';
                     }
                 })
+            },
+            hasReturn(orderId,goodsId,specId){
+                returnGoodsApi.check({order_id:orderId,goods_id:goodsId,goods_spec_item_id:specId}).then(response => {
+                    if(response){
+                        return true
+                    }else{
+                        return false
+                    }
+                })
+            },
+            onDeliveryClose(){
+                this.getList()
             }
         }
 
@@ -491,7 +534,7 @@
                             .name,.price,.num,.after_service{
                                 display: flex;
                                 align-items: center;
-                                height: 100%;
+                                margin-top: 12px;
                             }
                             .cover {
                                 float: left;
@@ -504,18 +547,23 @@
                             .name {
                                 width: 100px;
                                 float: left;
+                                height: 100px;
+                                overflow: hidden;
+                                padding: 0;
+                                margin-top: 10px;
                                 p {
-                                    line-height: 40px;
+                                    line-height: 25px;
+                                    height: 100px;
                                 }
                             }
                             .price, .num {
                                 width: 100px;
                                 float: left;
-                                line-height: 100px;
+                                line-height: 25px;
                             }
                             .after_service{
                                 cursor: pointer;
-                                line-height: 100px;
+                                line-height: 25px;
                                 &:hover{
                                     color:#35a0fc;
                                 }
@@ -527,22 +575,47 @@
                         width: 330px;
                         float: left;
                         display: flex;
-                        align-items: center;
                         height: 130px;
                         .total, .status {
                             width: 110px;
                             float: left;
                             line-height: 40px;
                             text-align: center;
+                            margin-top: 5px;
 
                         }
                         .operate {
                             width: 110px;
                             float: left;
+                            margin-top: 12px;
                         }
                     }
                 }
             }
         }
     }
+    .goods-title{
+        overflow: hidden;
+        border-bottom: 1px solid #e8e8e8;
+        line-height: 40px;
+        .name{
+            width: 230px;
+            float: left;
+            text-align: center;
+        }
+        .price{
+            width: 100px;
+            float: left;
+        }
+        .num{
+            width: 170px;
+            float: left;
+        }
+        .total{
+            width: 100px;
+            float:left;
+            text-align:center;
+        }
+    }
+
 </style>

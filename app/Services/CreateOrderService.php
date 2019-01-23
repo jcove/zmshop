@@ -134,10 +134,13 @@ class CreateOrderService
 
 
             }
-            $product['country_id']                   =   $goods->country_id;
+          
             $product['num']                          =   $cart->num;
             $product['spec']                         =   $cart->goods_spec_item_id;
+            $product['spec_name']                     =   $cart->goods_spec_item_name;
             $product['cover']                        =   $cart->cover;
+            $product['cover']                        =   $cart->cover;
+            $product['is_check']                        =   $cart->is_check;
             $products[]                              =   $product;
 
         }
@@ -154,8 +157,10 @@ class CreateOrderService
                     $orderGoods->goods_id           =   $product->id;
                     $orderGoods->goods_name         =   $product->name;
                     $orderGoods->num                =   $product->num;
-                    $orderGoods->final_price        =   $product->final_price;
+                    $orderGoods->final_price        =   round($product->final_price,2);
+                    $orderGoods->price              =   round($product->price,2);
                     $orderGoods->goods_spec_item_id =   $product->spec ?: 0;
+                    $orderGoods->goods_spec_item_name =   $product->spec_name ?: '';
                     $orderGoods->cover              =   $product->cover;
                     $this->orderGoods[]             =   $orderGoods;
                 }
@@ -196,6 +201,8 @@ class CreateOrderService
         $order->total_amount                        =   $this->total;
         $order->user_id                             =   Auth::id();
         $order->pay_code                            =   request()->pay_code ? :'';
+        $order->remark                              =   request()->remark ? request()->remark : '';
+        $order->zip_code                            =   $this->address->zip_code;
         if($order->pay_code == 'mastCard' || $order->pay_code == 'visa'){
             $order->pay_code                        =   'paypal';
         }

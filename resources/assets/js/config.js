@@ -14,10 +14,6 @@ const config = {
     debug:process.env.MIX_DEBUG==='true'
 }
 window.conifg= config;
-if(localStorage.getItem('lang')){
-    if(!config.debug){
-        config.baseApi = 'http://'+ localStorage.getItem('lang') +'.'+ config.domain;
-    }
-}
+
 window.siteDomain = config.baseApi;
 export default config

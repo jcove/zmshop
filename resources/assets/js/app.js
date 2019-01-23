@@ -9,7 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 import ElementUI from 'element-ui'
 import i18n from './lang/index'
-
+import '../sass/element-ui.scss';
 
 
 Vue.component('recommend_category', require('./components/recommendCategory.vue'));
@@ -39,7 +39,6 @@ Vue.component('go-pay-message',require('./components/goPayMessage'));
 Vue.component('relations',require('./components/relations'));
 Vue.component('relation-category',require('./components/relationCategory'));
 Vue.component('relation-brand',require('./components/relationBrand'));
-Vue.component('welcome',require('./components/welcome'));
 Vue.component('express',require('./components/express'));
 Vue.component('return-goods',require('./components/returnGoods'));
 Vue.component('nav-category-tree',require('./components/pc/navCategoryTree'));
@@ -50,9 +49,9 @@ Vue.component('floor-nav',require('./components/pc/floorNav'));
 Vue.component('visited-goods-list',require('./components/pc/visitedGoodsList'));
 Vue.component('goods-list-left-adv',require('./components/pc/goodsListLeftAdv'));
 Vue.component('category-slider',require('./components/pc/categorySlider'));
+Vue.component('delivery',require('./components/pc/delivery'));
+Vue.component('hot-goods-list',require('./components/hotGoodsList'));
 Vue.use(ElementUI);
-
-
 
 
 const app = new Vue({

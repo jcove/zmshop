@@ -13,9 +13,10 @@ userApi.login = function (qurey) {
     api.setPath('user/login');
     return api.post(qurey)
 };
-userApi.save=function(qurey){
+userApi.save=function(query){
     api.setPath('user');
-    return api.save(qurey)
+    query._method = 'put'
+    return api.save(query)
 };
 
 userApi.modifyPassword=function(query){
@@ -26,6 +27,9 @@ userApi.resetPassword=function(query){
     api.setPath('password/reset');
     return api.post(query)
 };
-
+userApi.my = function () {
+    api.setPath('user/my')
+    return api.get(null)
+}
 
 export default userApi;

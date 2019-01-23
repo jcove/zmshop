@@ -8,6 +8,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Exceptions\OrderException;
+use App\Models\Order;
 use App\Services\OrderService;
 use Exception;
 use Jcove\Restful\Restful;
@@ -15,10 +17,13 @@ use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Rest\ApiContext;
+use Yansongda\LaravelPay\Facades\Pay;
+
 
 class PayController extends Controller
 {
     use Restful;
+
 
     private $service;
 
@@ -48,31 +53,31 @@ class PayController extends Controller
     }
 
     public function  notification(){
-        if(!isset($_GET['paymentId'], $_GET['PayerID'])){
-            die();
-        }
-        $paypal                         =   new ApiContext(
-            new OAuthTokenCredential( config('payment.paypal.client_id'),config('payment.paypal.secret'))
-        );
-
-        $paymentID = $_GET['paymentId'];
-        $payerId = $_GET['PayerID'];
-
-        $payment = Payment::get($paymentID, $paypal);
-
-        $execute = new PaymentExecution();
-        $execute->setPayerId($payerId);
-        ini_set('max_execution_time','100');
-        try{
-            $result = $payment->execute($execute, $paypal);
-            $this->service->pay($id);
-
-        }catch(Exception $e){
-            dump($e->getMessage());
-            die($e);
-        }
 
         return $this->success(trans('message.pay_success'));
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws OrderException
+     */
+    public function payOrder($id){
+        $order                                          =   Order::findOrFail($id);
+        if(!$order->canPay()){
+            throw new OrderException(trans('order.order_status_not_allowed').':'.Order::orderStatusText($order->order_status),Error::order_status_error);
+        }
+        $array = [
+            'out_trade_no'          => $order->order_id,
+            'total_amount'          => $order->total_amount,
+            'subject'               => '购买',
+        ];
+
+        return Pay::alipay()->web($array);
+    }
+
+    public function return(){
+
     }
 
 }

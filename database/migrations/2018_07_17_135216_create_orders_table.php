@@ -37,6 +37,11 @@ class CreateOrdersTable extends Migration
             $table->dateTime('pay_time')->nullable();
             $table->dateTime('shipping_time')->nullable();
             $table->dateTime('confirm_time')->nullable();
+            $table->decimal('shop_promotion',10,2)->default(0);
+            $table->string('remark')->default('');
+            $table->string('zip_code')->default('');
+            $table->string('express_sn')->default('');
+            $table->dateTime('cancel_time');
             $table->timestamps();
         });
     }

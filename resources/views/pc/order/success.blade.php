@@ -60,7 +60,7 @@
 // Create a PayPal app: https://developer.paypal.com/developer/applications/create
             client: {
                 sandbox: '{{config('payment.paypal.client_id')}}',
-                production: '<insert production client id>'
+                production: '{{config('payment.paypal.client_id')}}'
             },
 
             payment: function (data, actions) {
@@ -70,9 +70,9 @@
                             {
                                 amount: {
                                     total: '{{$data->total_amount}}',
-                                    currency: "USD",
+                                    currency: "{{config('shop.currency')}}",
                                     details: {
-                                        subtotal: '{{$data->goods_amount}}',
+                                        subtotal: '{{$data->goods_amount-$data->shop_promotion}}',
                                         shipping: '{{$data->shipping_fee}}'
                                     }
                                 },
@@ -81,14 +81,14 @@
                                 invoice_number: "{{$data->order_sn}}",
                                 item_list: {
                                     items: [
-                                        @foreach($data->order_goods as $item)
+
                                         {
-                                            name: "{{$item->goods_name}}",
-                                            quantity: '{{$item->num}}',
-                                            price: '{{$item->final_price}}',
-                                            currency: "USD"
-                                        },
-                                        @endforeach
+                                            name: "ÉÌÆ·",
+                                            quantity: 1,
+                                            price: '{{$data->goods_amount-$data->shop_promotion}}',
+                                            currency: "{{config('shop.currency')}}"
+                                        }
+
                                     ]
                                 },
                                 // payment_options: {
@@ -107,7 +107,6 @@
             onAuthorize: function (data, actions) {
                 return actions.payment.execute()
                     .then(function (result) {
-                        window.alert('Payment Complete!');
                         location.href =  "{{route('pay.success',['id'=>$data->id],true)}}"+ '?paymentId='+result.id+'&PayerID='+result.payer.payer_info.payer_id;
                     });
             }

@@ -2,7 +2,7 @@
     <div class="swiper-container">
         <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="str in list" :style="{ backgroundImage: 'url(' + str.code + ')' }">
-                <a :href="str.link"><img :src="str.code" ></a>
+                <a :href="str.link" target="_blank"><img :src="str.code" ></a>
             </div>
         </div>
         <!-- 如果需要导航按钮 -->

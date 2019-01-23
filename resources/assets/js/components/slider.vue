@@ -2,7 +2,7 @@
     <div class="swiper-container slider">
         <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="str in list" :style="{ backgroundColor: str.background_color }">
-                <a :href="str.link"><img :src="str.code" ></a>
+                <a :href="str.link" target="_blank"><img :src="str.code" ></a>
             </div>
         </div>
         <!-- 如果需要分页器 -->
@@ -67,6 +67,11 @@
             width: 100%;
             height: 450px;
             text-align: center;
+            a{
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
             img {
                 width: 760px;
                 height: 450px;

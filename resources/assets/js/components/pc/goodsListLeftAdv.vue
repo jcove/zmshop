@@ -1,7 +1,7 @@
 <template>
     <div class="goods-list-left-adp">
         <div v-for="item in list" class="item">
-            <a :href="item.link">
+            <a :href="item.link" target="_blank">
                 <img :src="item.code">
             </a>
         </div>

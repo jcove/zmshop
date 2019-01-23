@@ -17,11 +17,12 @@ Route::get('address/region','UserAddressController@region');
 Route::group(['middleware'=>'auth:api'],function ($route){
     Route::get('address/default','UserAddressController@getDefault');
     Route::apiResource('address', 'UserAddressController');
-
+    $route->post('cart/checkAll', 'CartController@checkAll')->name('cart.checkAll');
     Route::post('cart', 'CartController@add');
     $route->delete('cart/checked','CartController@deleteChecked');
     $route->delete('cart/{id}','CartController@destroy');
     Route::get('cart', 'CartController@index');
+    $route->get('cart/total','CartController@total');
     Route::post('cart/check/{id}', 'CartController@check');
     Route::post('order','OrderController@createOrder');
     Route::post('order/confirm/{id}','OrderController@confirm');
@@ -44,6 +45,9 @@ Route::group(['middleware'=>'auth:api'],function ($route){
     $route->post('order/cancel/{id}','OrderController@cancel');
     $route->apiResource('returnGoods', 'ReturnGoodsController');
     Route::get('shipping/fee', 'FreightTemplateController@fee');
+    $route->put('delivery/confirm/{id}','DeliveryController@confirm')->name('delivery.confirm');
+    Route::get('freight/fee', 'FreightTemplateController@getShippingFee');
+    Route::resource('delivery', 'DeliveryController');
 
 });
 Route::get('comment','CommentController@index');
@@ -88,4 +92,4 @@ Route::apiResource('country', 'CountryController');
 Route::get('freight/fee', 'FreightTemplateController@getShippingFee');
 Route::apiResource('freightTemplate', 'FreightTemplateController');
 
-
+Route::get('config', 'ConfigController@json');

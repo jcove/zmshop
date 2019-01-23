@@ -10,12 +10,12 @@
                   { required: true, message: '请输入手机号', trigger: 'blur' },
                   { type: 'tel', message: '请输入正确的手机号', trigger: ['blur', 'change'] }
                 ]">
-                        <el-input v-model="form.mobile" style="width:300px" :placeholder="$t('user.mobile')" type="tel"    >
+                        <el-input v-model="form.mobile" style="width:300px" :placeholder="$t('user.mobile')" type="tel"    @keyup.enter.native="login">
                             <i slot="prefix" class="iconfont icon-seeuser"></i>
                         </el-input>
                     </el-form-item>
                     <el-form-item  label-width="0px" >
-                        <el-input v-model="form.password" style="width:300px" :placeholder="$t('user.password')" type="password">
+                        <el-input v-model="form.password" style="width:300px" :placeholder="$t('user.password')" type="password" @keyup.enter.native="login">
                             <i slot="prefix" class="iconfont icon-lock"></i>
                         </el-input>
                     </el-form-item>
@@ -44,15 +44,15 @@
                   { required: true, message: '请输入手机号', trigger: 'blur' },
                   { type: 'tel', message: '请输入正确的手机号', trigger: ['blur', 'change'] }
                 ]">
-                        <el-input v-model="form.mobile" style="width:300px " type="tel"  :placeholder="$t('user.mobile')">
+                        <el-input v-model="form.mobile" style="width:300px " type="tel"  :placeholder="$t('user.mobile')" @keyup.enter.native="login">
                             <i slot="prefix" class="iconfont icon-seeuser"></i>
                         </el-input>
                     </el-form-item>
                     <el-form-item label="" label-width="0px">
-                        <el-input v-model="form.code" style="width:150px;float:left" :placeholder="$t('user.sms_code')">
+                        <el-input v-model="form.code" style="width:150px;float:left" :placeholder="$t('user.sms_code')" @keyup.enter.native="login">
                             <i slot="prefix" class="iconfont icon-lock"></i>
                         </el-input>
-                        <el-button type="info" :disabled="sendCodeButtonDisabled" @click="sendSms" style="width: 150px;">{{sendCodeLabel}}</el-button>
+                        <el-button type="success" :disabled="sendCodeButtonDisabled" @click="sendSms" style="width: 150px;">{{sendCodeLabel}}</el-button>
 
                     </el-form-item>
                     <el-form-item>

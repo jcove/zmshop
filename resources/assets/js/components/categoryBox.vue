@@ -2,20 +2,20 @@
 
     <div class="index-category-box container" :id="category.id">
         <div class="adp-banner">
-            <a :href="adBanner.link">
+            <a :href="adBanner.link" target="_blank">
             <img :src="adBanner.code"/>
             </a>
         </div>
         <div class="category-children" v-loading="categoryLoading">
             <div class="title" :style="{background: backgrounds[index]}">
-                {{category.name}}{{index+1}}F
+                <a :href="getCategoryRoute(category.id)" target="_blank">{{category.name}}{{index+1}}F</a>
             </div>
             <ul>
                 <template v-if="categories">
                     <template  v-for="(item ,index) in categories">
                         <li v-if="index < 10">
 
-                            <a :href="getCategoryRoute(item.id)">
+                            <a :href="getCategoryRoute(item.id)" target="_blank">
                                 {{item.name}}
                             </a>
 
@@ -26,7 +26,7 @@
                 <template v-if="brands">
                     <template v-for="(item ,index) in brands">
                         <li v-if="index < 10" >
-                            <a :href="'/brand/'+item.id">
+                            <a :href="'/brand/'+item.id" target="_blank">
                                 <img :src="item.logo">
                             </a>
                         </li>
@@ -46,13 +46,15 @@
                 <ul >
                     <template  v-for="(item,index) in goods">
                         <li v-if="index < 8">
-                            <a :href="'goods/'+item.id">
+                            <a :href="'goods/'+item.id" target="_blank">
                                 <div class="cover">
                                     <img class="img-responsive" :src="item.cover"/>
                                 </div>
-                                <p class="name">{{item.name}}</p>
-                                <p class="price">{{item.price}}</p>
                             </a>
+                            <a :href="'goods/'+item.id" target="_blank">   <p class="name">{{item.name}}</p>
+                            </a>
+                                <p class="price">{{$t('goods.$')}}{{item.price}}</p>
+
                         </li>
                     </template>
 
@@ -256,6 +258,15 @@
                     text-align:center;
 
                 }
+                .name{
+                    height: 50px;
+                    overflow: hidden;
+                    font-size: 12px;
+                    padding: 0 5px;
+                    &:hover{
+                        color: red;
+                    }
+                }
                 .cover{
                     width: 148px;
                     height: 140px;
@@ -267,22 +278,20 @@
                         width: 140px;
                         height: 140px;
                     }
+                    &:hover {
+                        img {
+                            transform: scale(1.03);
+                            -ms-transform: scale(1.03);
+                            -webkit-transform: scale(1.03);
+                        }
+                    }
                 }
                 .price{
                     color:#fb4d72;
                     margin-top: 10px;
                     font-size: 16px;
                 }
-                &:hover{
-                    img{
-                        transform:scale(1.03);
-                        -ms-transform:scale(1.03);
-                        -webkit-transform:scale(1.03);
-                    }
-                    .name{
-                        color: red;
-                    }
-                }
+
             }
         }
 

@@ -12,82 +12,96 @@
 <script>
     export default {
         name: "filter-params",
-        props:{
-            params:{
-                type:Object,
-                default:{}
+        props: {
+            params: {
+                type: Object,
+                default: {}
             },
-            url:''
+            url: ''
         },
-        data(){
-          return {
-              filters:[],
-              brand:'',
-              attrs:[]
-          }
+        data() {
+            return {
+                filters: [],
+                brand: null,
+                attrs: [],
+                paramData:{}
+            }
         },
-        created(){
+        created() {
+            this.paramData = this.params;
             this.setFilters();
+
         },
-        methods:{
-            setFilters(){
-                const array             =   [];
-                if(this.params.brand){
-                    const brand             =   this.params.brand.split(':');
-                    this.brand              =   {name:this.$t('goods.brand'),value:brand[1]};
-                }else {
-                    this.params.brand = ''
+        methods: {
+            setFilters() {
+                const array = [];
+                if (this.paramData.brand) {
+                    const brand = this.paramData.brand.split(':');
+                    this.brand = {name: this.$t('goods.brand'), value: brand[1]};
+                } else {
+                    this.paramData.brand = ''
                 }
 
 
-                if(this.params.attr){
-                    const attrs             =   this.params.attr.split(',');
+                if (this.paramData.attr) {
+                    const attrs = this.paramData.attr.split(',');
                     console.log(attrs);
                     attrs.forEach(function (item) {
-                        var attr            =   item.split(':');
-                        array.push({name:attr[0],value:attr[1]})
+                        var attr = item.split(':');
+                        array.push({name: attr[0], value: attr[1]})
                     })
-                }else {
-                    this.params.attr = '';
+                } else {
+                    this.paramData.attr = '';
                 }
 
-                this.attrs              =   array;
+                this.attrs = array;
             },
-            handleBrandClick(){
-                console.log(this.params.attr);
-                location.href           =   this.url+'?attr='+this.params.attr+'&sort='+this.params.sort;
+            handleBrandClick() {
+                this.paramData.brand = '';
+                location.href = this.url + '?' + this.setQuery()
             },
-            handleAttrClick(filter){
-                var str                 =   this.params.attr;
-                if(this.attrs && filter){
-                    str                 =   ''
-                    this.attrs.splice(this.attrs.indexOf(filter),1);
+            handleAttrClick(filter) {
+                var str = this.params.attr;
+                if (this.attrs && filter) {
+                    str = ''
+                    this.attrs.splice(this.attrs.indexOf(filter), 1);
                     this.attrs.forEach(function (item) {
-                        var attr      =   item.name+':'+item.value;
-                        str             +=  attr+',';
+                        var attr = item.name + ':' + item.value;
+                        str += attr + ',';
                     })
-                    if(str.length > 0){
-                        str             =   str.substring(0,str.length-1)
+                    if (str.length > 0) {
+                        str = str.substring(0, str.length - 1)
                     }
                 }
-               location.href           =   this.url+'?brand='+this.params.brand+'&sort='+this.params.sort+'&attr='+str;
+                this.paramData.attr = str
+                location.href = this.url + '?' + this.setQuery();
+            },
+            setQuery() {
+                const keys = Object.keys(this.paramData);
+                var str = '';
+                const that = this
+                keys.forEach(function (key) {
+                    str += key + '=' + that.params[key] + '&'
+                })
+                return str;
             }
         }
     }
 </script>
 
 <style scoped lang="scss">
-    .filters-params{
+    .filters-params {
         background-color: #f9f9f9;
         padding: 15px;
     }
-    .filter-param{
+
+    .filter-param {
 
         color: #35a0fc;
         display: inline-block;
         padding: 5px 10px;
-        span{
-            color:#333;
+        span {
+            color: #333;
             cursor: pointer;
         }
     }

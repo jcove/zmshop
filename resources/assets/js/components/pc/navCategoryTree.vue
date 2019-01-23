@@ -13,11 +13,11 @@
             <ul>
                 <li v-for="item in subs">
                     <div class="level-2">
-                        <a :href="getCategoryRoute(item.id)">{{item.name}}</a>
+                        <a :href="getCategoryRoute(item.id)" target="_blank">{{item.name}}</a>
                     </div>
                     <div class="level-3">
                         <div class="sub" v-for="sub in item.child">
-                            | <a :href="getCategoryRoute(sub.id)">{{sub.name}}</a>
+                            | <a :href="getCategoryRoute(sub.id)" >{{sub.name}}</a>
                         </div>
                     </div>
                 </li>

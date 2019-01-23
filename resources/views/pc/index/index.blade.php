@@ -15,5 +15,6 @@
             :category="{{$category}}">
         </category-box>
     @endforeach
+    <hot-goods-list></hot-goods-list>
     @include('pc.widgets.footer')
 @endsection

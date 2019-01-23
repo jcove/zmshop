@@ -40,7 +40,12 @@
                 <el-form-item :label="$t('user.phone')">
                     <el-input v-model="form.phone" style="width: 160px"></el-input>
                 </el-form-item>
-
+                <el-form-item :label="$t('user.zip_code')">
+                    <el-input v-model="form.zip_code" style="width: 160px"></el-input>
+                </el-form-item>
+                <el-form-item label="">
+                    <el-checkbox v-model="form.is_default">{{$t('user.is_default')}}</el-checkbox>
+                </el-form-item>
                 <el-form-item size="large" label="" label-width="160px">
                     <el-button type="primary" @click="onSubmit">{{$t('common.save')}}</el-button>
                 </el-form-item>
@@ -55,6 +60,12 @@
                     prop="consignee"
                     :label="$t('user.consignee')"
                     width="180">
+                <template slot-scope="scope">
+                    {{ scope.row.consignee }}
+                    <template v-if="scope.row.is_default">
+                        <span style="color: red;border:1px solid red;font-size: 11px">{{$t('user.default')}}</span>
+                    </template>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="region"
@@ -106,7 +117,8 @@
                     district: '',
                     address: '',
                     phone: '',
-                    is_default: 1
+                    is_default: false,
+                    zip_code: ''
                 },
                 countries:[],
                 index:-1,
@@ -138,17 +150,7 @@
                             type: 'success'
                         });
                         that.initForm();
-                        var address = response.data;
-                        address.region = address.country+address.province+address.city+address.district;
-
-                        if(this.index >= 0){
-                            that.$set(that.addresses,that.index,address);
-                            that.index = 0;
-                        }else {
-
-                            that.addresses.push(address)
-
-                        }
+                       that.getList()
                     }
                 })
             },
@@ -187,7 +189,12 @@
                 if (form != null) {
                     const keys = Object.keys(form);
                     keys.forEach(function (key) {
-                        that.form[key] = form[key];
+                        if(key==='is_default'){
+                            that.form.is_default = form.is_default===1
+                        }else {
+                            that.form[key] = form[key];
+                        }
+
                     })
                     if (form.country === this.$t('user.china')) {
                         const that = this;
@@ -212,7 +219,8 @@
                     district: '',
                     address: '',
                     phone: '',
-                    is_default: 1
+                    is_default: 1,
+                    zip_code: ''
                 }
             },
             handleEdit(index,item){
@@ -229,6 +237,11 @@
                         type: 'success'
                     });
                 });
+            },
+            getList(){
+                addressApi.list(null).then(response => {
+                    this.addresses = response.data
+                })
             }
         }
 

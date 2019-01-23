@@ -76,13 +76,7 @@ return [
     ],
     'common'            =>  [
         'operate'       =>  '操作',
-        'goods_sn_search'=>'药品编码查询',
-        'japan'         =>  '日本',
-        'korea'         =>  '韩国',
-        'thailand'              =>  '泰国',
-        'india'              =>  '印度',
-        'america'              =>  '美国',
-        'please_input_name' =>  '请输入药品名称'
+        'please_input_name' =>  '请输入商品名称'
 
     ]
 

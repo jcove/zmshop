@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Schema;
 class ConfigService
 {
     public static function load(){
-        if (Schema::hasTable('config'))
+        if (Schema::hasTable('configs'))
         {
             $configs                     = DB::table('configs')->get();
             foreach ($configs as $config) {

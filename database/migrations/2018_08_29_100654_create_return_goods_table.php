@@ -26,10 +26,13 @@ class CreateReturnGoodsTable extends Migration
             $table->tinyInteger('type')->default(1);
             $table->string('express_code',20)->default('');
             $table->string('express_sn',60)->default('');
+            $table->string('express_name')->default('');
             $table->string('seller_remark')->default('');
             $table->integer('goods_spec_item_id')->default(0);
             $table->string('goods_spec_item_name')->default('');
             $table->integer('user_id')->default(0);
+            $table->string('cover')->default('');
+            $table->string('goods_name')->default('');
             $table->timestamps();
         });
     }

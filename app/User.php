@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+         'remember_token',
     ];
 
     public function generateToken()
@@ -37,5 +37,22 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value){
         return storage_url($value);
+    }
+
+    public function userAddress(){
+        return $this->hasMany('App\Models\UserAddress','user_id','id');
+    }
+
+    public function getGenderTextAttribute(){
+        switch ($this->gender){
+            case 1:
+                return '男';
+                break;
+            case 2:
+                return '女';
+                break;
+            default:
+                return '';
+        }
     }
 }

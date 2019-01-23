@@ -24,6 +24,7 @@ class CreateUserAddressesTable extends Migration
             $table->string('address')->default('');
             $table->string('phone')->default('');
             $table->tinyInteger('is_default')->default(0);
+            $table->string('zip_code')->default('');
             $table->timestamps();
         });
     }

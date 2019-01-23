@@ -11,9 +11,18 @@
                 location.href       =   url+'/goods?q='+q;
             }
         });
-        $('.keywords').keyup(function (event) {
+        $('#keywords').keyup(function (event) {
             if(event.which===13){
                 const q                 =   $('#keywords').val();
+                if(q && q!==''){
+                    location.href       =   url+'/goods?q='+q;
+                }
+            }
+        });
+        $('#keywords-fixed').keyup(function (event) {
+            console.log(event)
+            if(event.which===13){
+                const q                 =   $('#keywords-fixed').val();
                 if(q && q!==''){
                     location.href       =   url+'/goods?q='+q;
                 }

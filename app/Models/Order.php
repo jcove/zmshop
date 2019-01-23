@@ -29,6 +29,10 @@ class Order extends Model
         return $this->hasMany('App\Models\OrderGoods','order_id','id');
     }
 
+    public function user(){
+        return $this->hasOne('App\User','id','user_id');
+    }
+
     public static function orderStatusText($orderStatus){
         $text                           =   '';
         switch ($orderStatus){
@@ -54,5 +58,20 @@ class Order extends Model
 
     public static function allStatusNumber($userId){
         return static ::where('user_id',$userId)->groupBy('order_status')->select(DB::raw('order_status,count(id) as num'))->get();
+    }
+
+    public function isShipped(){
+        $orderGoods                     =   $this->order_goods;
+        $count                          =   0;
+        foreach ($orderGoods as $key =>$goods){
+            if($goods->is_shipping > 0){
+                $count++;
+            }
+        }
+
+       return count($orderGoods) == $count;
+    }
+    public function canPay(){
+        return $this->order_status == Order::CREATED;
     }
 }

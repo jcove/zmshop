@@ -31,10 +31,18 @@
                             {{$t('cart.invalid')}}
                         </div>
                         <div class="cover float-left">
-                            <img :src="goods.cover">
+                           <a  :href="'goods/'+goods.goods_id" target="_blank">
+                               <img :src="goods.cover">
+                           </a>
                         </div>
                         <div class="name float-left">
-                            <p>{{goods.goods_name}}</p>
+                            <a  :href="'goods/'+goods.goods_id" target="_blank">
+                                <p>{{goods.goods_name}}
+                                <template v-if="goods.goods_spec_item_name">
+                                    <span style="color: #35A0FC">{{goods.goods_spec_item_name}}</span>
+                                </template>
+                                </p>
+                            </a>
                         </div>
                         <div class="price float-left">
                             {{goods.price}}
@@ -65,20 +73,30 @@
                             <el-checkbox v-model="goods.is_check" @change="handelCartCheckChange(goods)"></el-checkbox>
                         </div>
                         <div class="cover float-left">
-                            <img :src="goods.cover">
+                            <a  :href="'goods/'+goods.id" target="_blank">
+                                <img :src="goods.cover">
+                            </a>
                         </div>
                         <div class="name float-left">
-                            <p>{{goods.name}}</p>
+                            <a  :href="'goods/'+goods.id" target="_blank">
+                            <p>{{goods.name}}
+                            <template v-if="goods.goods_spec_item_name">
+                                <span style="color: #35A0FC">[{{goods.goods_spec_item_name}}]</span>
+                            </template>
+
+                            </p>
+                            </a>
                         </div>
                         <div class="price float-left">
-                            {{goods.final_price}}
+                            <p>{{(new Number(goods.price)).toFixed(2)}}</p>
+                            <p class="promotion" v-if="group.id > 0">{{$t('cart.promotion')}}:<span class="promotion-name">{{group.name}}</span></p>
                         </div>
                         <div class="num float-left">
-                            <el-input-number v-model="goods.num" @change="handleNumChange" :min="1" :max="1000"
+                            <el-input-number v-model="goods.num" @change="handleNumChange(goods,gIndex,index)" :min="1" :max="goods.max"
                                              size="mini"></el-input-number>
                         </div>
                         <div class="total float-left">
-                            {{getTotal(goods.num,goods.final_price)}}
+                            {{getTotal(goods.num,goods.price)}}
                         </div>
                         <div class="tools float-left">
                             <a href="javascript:void(0)"
@@ -101,6 +119,7 @@
                 </div>
                 <div class="total float-left">
                     {{$t('cart.total')}}:<span class="amount">{{$t('goods.$')}}{{total}}</span>
+                    {{$t('cart.saved')}}{{$t('goods.$')}}{{promotion}}
                 </div>
                 <div class="settled float-right">
                     <el-button type="primary" size="medium" @click="submit">{{$t('operate.settled')}}
@@ -142,10 +161,9 @@
                 chooseNum: 0,
                 total: 0,
                 config:config,
-                isIndeterminate: true,
                 count: 0,
                 checkAll:false,
-
+                promotion: 0
 
             }
         },
@@ -157,7 +175,7 @@
         },
         methods: {
             getTotal(num, price) {
-                return Math.floor(price * num).toFixed(2);
+                return (new Number(price * num)).toFixed(2);
             },
             getPrice() {
                 var products = [];
@@ -171,7 +189,9 @@
                         num: cart.num,
                         cover: cart.cover,
                         is_check: cart.is_check === 1,
-                        cart_id:cart.id
+                        cart_id:cart.id,
+                        goods_spec_item_name:cart.goods_spec_item_name,
+                        max:cart.store
                     };
                     if(cart.is_check ===1 ){
                         count++;
@@ -184,11 +204,34 @@
                     that.computeTotal();
                 })
             },
-            handleNumChange(value) {
+            handleNumChange(goods,gIndex,index) {
+                this.cartGroup[gIndex].products[index].disabled = true
+                cartApi.save({id:goods.cart_id,num:goods.num}).then(response => {
+                    if(response){
+                        this.cartGroup[gIndex].products[index].disabled = false
+                    }
+                },error => {
+                });
+                const that = this
+                this.carts.forEach(function (cart,index) {
+                    if(cart.id === goods.cart_id){
+                        cart.num = goods.num
+                    }
+                    that.$set(that.carts,index,cart)
 
+                })
+                this.getPrice();
             },
             handelCartCheckChange(goods) {
-                this.computeTotal();
+                const that = this
+                this.carts.forEach(function (cart,index) {
+                    if(cart.id === goods.cart_id){
+                        cart.is_check = goods.is_check  ? 1:0
+                    }
+                    that.$set(that.carts,index,cart)
+
+                })
+                this.getPrice();
                 cartApi.check(goods.cart_id).then();
             },
             deleteCart(goods, gIndex, index) {
@@ -201,6 +244,7 @@
                             showClose:true
                         })
                         that.cartGroup[gIndex].products.splice(index,1)
+                        location.reload()
                     }
                 })
             },
@@ -247,6 +291,7 @@
                 if (this.cartGroup.length > 0) {
                     var total = 0;
                     var count = 0;
+                    var promotion = 0
                     this.cartGroup.forEach(function (group) {
                         if (group.products.length > 0) {
 
@@ -258,13 +303,36 @@
 
                             });
                         }
+                        promotion+= group.promotion
                     })
-                    this.total = Math.floor(total).toFixed(2);
+                    this.promotion = promotion;
+                    this.total = (new Number(total)).toFixed(2);
                     this.chooseNum = count
                 }
             },
             submit(){
-                location.href="/cart/submit";
+                if(this.hasCheckd()){
+                    location.href="/cart/submit";
+                }else {
+                    this.$message({
+                        message:this.$t('cart.please_choose_goods'),
+                        type:'success'
+                    });
+                }
+
+            },
+            hasCheckd(){
+                var check = false
+                this.cartGroup.forEach(function (group) {
+                    if(group.products.length > 0){
+                        group.products.forEach(function(goods){
+                            if(goods.is_check) {
+                                check = true
+                            }
+                        })
+                    }
+                })
+                return check;
             },
             handleCheckAllChange(value) {
                 const that               =   this;
@@ -309,24 +377,33 @@
             width: 300px;
             float: left;
             p {
-                text-align: center;
-                line-height: 120px;
+                /*text-align: center;*/
+                /*line-height: 120px;*/
+            }
+        }
+        .price{
+            .promotion{
+                .promotion-name{
+                    border:1px solid red;
+                    font-size: 11px;
+                    color:red;
+                }
             }
         }
         .num, .price {
             width: 140px;
-            line-height: 120px;
+            /*line-height: 120px;*/
             text-align: center;
         }
         .total {
             width: 140px;
-            line-height: 120px;
+            /*line-height: 120px;*/
             text-align: center;
         }
         .tools {
             width: 120px;
             text-align: center;
-            line-height: 120px;
+            /*line-height: 120px;*/
         }
     }
     .cart-disabled{

@@ -26,4 +26,19 @@ class ConfigController extends Controller
     protected function where(){
         return [];
     }
+
+    public function json(){
+
+        $list                       =   $this->model->all();
+
+        if($list){
+            $data                   =   [];
+            foreach ($list as $row){
+                $data[$row->name] =   $row->value;
+            }
+        }
+        $this->data                 =   $data;
+        return $this->respond($this->data);
+
+    }
 }

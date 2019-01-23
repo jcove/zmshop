@@ -66,7 +66,7 @@ class OrderService
             throw new OrderException(trans('order.order_status_not_allowed').':'.Order::orderStatusText($order->order_status),Error::order_status_error);
         }
         $order->order_status                        =   Order::CONFIRMED;
-        $order->confirm_time                       =   new Carbon();
+        $order->confirm_time                        =   new Carbon();
         $order->save();
         event(new OrderConfirmed($order));
     }

@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Exceptions\ParamException;
 use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,21 @@ class UserController extends Controller
         return $this->respond($this->model);
     }
 
+    protected function validator($data){
+        if(request()->method()== "PUT"){
+            $rules['mobile']                        =   'required|unique:users,id,'.request()->id;
+            $rules['password']                      =   'required|between:6,60|confirmed';
+            $rules['password_confirmation']         =   'required|between:6,60';
+        }else{
+            $rules['mobile']                        =   'required|unique:admin_users';
+            $rules['password']                      =   'required|between:6,60|confirmed';
+            $rules['password_confirmation']         =   'required|between:6,60';
+        }
+        $rules['nick']                              =   'required';
+
+        return Validator::make($data,$rules);
+    }
+
     public function my(){
         $this->data['data']             =   Auth::user();
         $this->setTitle(trans('html.user.base_info'));
@@ -64,5 +80,11 @@ class UserController extends Controller
             $where['mobile']                        =   $mobile;
         }
         return $where;
+    }
+
+    public function center(){
+        $this->data['data']             =   Auth::user();
+        $this->setTitle(trans('html.user.person_center'));
+        return $this->respond($this->data);
     }
 }

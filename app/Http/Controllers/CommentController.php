@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Error;
 use App\Exceptions\OrderException;
 use App\Exceptions\ParamException;
 use App\Http\Requests\CommentRequest;
@@ -40,22 +41,26 @@ class CommentController extends Controller
 
         $order                                      =   $request->order;
         if($order->order_status!= Order::CONFIRMED){
-            throw new OrderException(trans('order.order_status_not_allowed').':'.Order::orderStatusText($order->order_status));
+            throw new OrderException(trans('order.order_status_not_allowed').':'.Order::orderStatusText($order->order_status),Error::order_status_error);
         }
 
 
         $comments                                   =   $request->comments;
         $orderGoods                                 =   $order->order_goods;
         if(count($comments) != count($orderGoods)){
-            throw new OrderException(trans('order.all_goods_should_commented'));
+            throw new OrderException(trans('order.all_goods_should_commented'),2);
         }
         DB::transaction(function () use ($comments,$orderGoods,$request){
             foreach ($comments as $comment){
+                if(empty($comment['content'])){
+                    throw new OrderException(trans('order.comment_content_can_not_null'),2);
+                }
                 $Comment                            =   new Comment();
                 $Comment->goods_id                  =   $comment['goods_id'];
                 $Comment->content                   =   $comment['content'];
                 $Comment->user_id                   =   Auth::id();
                 $Comment->nick                      =   Auth::user()->nick;
+                $Comment->avatar                    =   Auth::user()->avatar;
                 $Comment->images                    =   !empty($comment['images']) ? implode(',',$comment['images']) : '';
                 $Comment->express_rank              =   $comment['express_rank'];
                 $Comment->goods_rank                =   $comment['goods_rank'];

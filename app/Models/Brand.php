@@ -15,6 +15,8 @@ class Brand extends Model
 
     }
 
+
+
     public function getLogoAttribute($value){
         return storage_url($value);
     }

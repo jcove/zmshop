@@ -32,10 +32,25 @@ class Goods extends Model
         if($sort=='sales'){
             $goods->orderBy('sale_num','desc');
         }
-        return $goods->paginate(config('restful.page_rows'));
+        return $goods->paginate(request()->page_size ? request()->page_size: config('restful.page_rows'));
     }
 
     public static function info($id){
         return static :: where(['id'=>$id, 'status'=> 1])->first();
+    }
+
+    public function brand(){
+        return $this->hasOne('App\Models\Brand','id','brand_id');
+    }
+
+    public function category(){
+        return $this->hasOne('App\Models\GoodsCategory','id','category_id');
+    }
+    public function specification_item_price(){
+        return $this->hasMany('App\Models\GoodsSpecificationItemPrice');
+    }
+
+    public static function getBrandsByIds($ids){
+        return static ::whereIn('id',$ids)->select('brand_id')->get();
     }
 }

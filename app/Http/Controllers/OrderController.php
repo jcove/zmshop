@@ -77,6 +77,7 @@ class OrderController extends Controller
     }
 
     protected function beforeIndex(){
+
         if($this->canJson()){
             if($list = $this->data){
                 if(count($list)){
@@ -97,6 +98,7 @@ class OrderController extends Controller
                     $this->data['list']         =   $list;
                 }
             }
+            $this->data['params']           =   $this->where();
         }
 
         $this->setTitle(trans('html.order.order_list'));
@@ -184,6 +186,12 @@ class OrderController extends Controller
 
         $this->data['data']                 =   $order;
         $this->setTitle(trans('html.order.success'));
+        return $this->respond($this->data);
+    }
+
+    public function express($id){
+        $this->setTitle(trans('html.order.express_info'));
+        $this->data['order_id']             =   $id;
         return $this->respond($this->data);
     }
 } 

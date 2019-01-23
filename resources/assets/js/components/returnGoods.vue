@@ -31,6 +31,12 @@
                         <div class="status">
                             {{orderStatus(order.status)}}
                         </div>
+
+                        <div class="status" v-if="order.status ==1">
+                            <el-button @click="showExpress(order)">
+                                {{$t('order.input_express')}}
+                            </el-button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,6 +50,26 @@
                     @next-click="nextClick">
             </el-pagination>
         </div>
+        <el-dialog :visible.sync="visible">
+            <el-form>
+                <el-form-item :label="$t('order.express_name')" label-width="180px">
+                    <el-select v-model="form.express_code">
+                        <el-option v-for="express in expresses"
+                                   :key="express.express_code"
+                                   :label="express.name"
+                                   :value="express.express_code">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item :label="$t('order.express_sn')" label-width="180px">
+                    <el-input v-model="form.express_sn"></el-input>
+                </el-form-item>
+                <el-form-item label-width="180px">
+                    <el-button @click="save" type="primary">{{$t('operate.submit')}}</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -51,13 +77,13 @@
     import orderApi from '../api/order';
     import api from "../api";
     import returnGoodsApi from "../api/returnGoods";
-
-
+    import expressApi from "../api/express";
     const CREATED = 0;//创建
     const AGREE = 1;//同意
-    const REFUSED = 2;//取消
-    const FINISH = 3;//已完成
-    const CANCELED    =   -1;
+    const REFUSED = 2;//拒绝
+    const SEND = 3;
+    const FINISH = 4;//已完成
+    const CANCELED    =   -1;//取消;
     export default {
         name: "return-goods",
         data() {
@@ -67,7 +93,14 @@
                 express_sn:'',
                 shipping_code:'',
                 shipping_name:'',
-                expressDialogVisible:false,
+                visible:false,
+                expresses: [],
+                form: {
+                    id: 0,
+                    express_code: '',
+                    express_sn: '',
+                    status: SEND
+                },
                 list: [],
 
                 params: {
@@ -126,6 +159,9 @@
                     case AGREE:
                         text = this.$t('order.agree');
                         break;
+                    case SEND:
+                        text = this.$t('order.send');
+                        break;
                     case FINISH:
                         text = this.$t('order.finish');
                         break;
@@ -138,7 +174,19 @@
                 }
                 return text;
             },
-
+            showExpress(row){
+              this.form.id = row.id
+                this.visible = true
+                this.getExpresses()
+            },
+            getExpresses() {
+                const that = this
+                expressApi.list({ all: 1 }).then(response => {
+                    if (response) {
+                        that.expresses = response.data
+                    }
+                })
+            },
             operateDisable(status) {
                 let disable = true;
                 switch (status) {
@@ -207,6 +255,16 @@
                        this.filters[0].num      =   total;
                    }
                 });
+            },
+            save() {
+                returnGoodsApi.send(this.form).then(response => {
+                    this.$message({
+                        message: this.$t('common.submit_success'),
+                        type: 'success'
+                    })
+                    this.getList();
+                    this.visible = false;
+                })
             }
         }
 

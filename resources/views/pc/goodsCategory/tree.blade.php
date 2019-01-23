@@ -7,7 +7,7 @@
 
             <div class="category">
                 <div class="name">
-                    {{$loop->index +1}}F {{$category->name}}
+                    <a href="{{route('goods.index',['category_id'=>$category->id])}}"> {{$loop->index +1}}F {{$category->name}}</a>
                 </div>
 
                 <div class="subs">

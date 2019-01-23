@@ -43,9 +43,21 @@ class CartController extends Controller
             'num'                       =>  'required',
         ]);
     }
+
+    /**
+     * @throws GoodsException
+     */
     protected function prepareSave(){
         $this->validateStore();
         $this->model->user_id           =   Auth::id();
+    }
+
+
+    /**
+     * @throws GoodsException
+     */
+    protected function beforeUpdate(){
+        $this->validateStore($this->model);
     }
     protected function where(){
         request()->offsetSet('all','1');
@@ -58,6 +70,7 @@ class CartController extends Controller
 
     protected function beforeIndex(){
         $carts                          =   [];
+        $this->setTitle(trans('html.cart'));
         if(!$this->canJson()){
             $carts                      =   $this->data['list'];
         }else{
@@ -68,6 +81,14 @@ class CartController extends Controller
                 $goods                  =   Goods::find($cart->goods_id);
                 if($goods){
                     $cart->price            =   $goods->price;
+                    $cart->store           =   $goods->store;
+                    if($cart->goods_spec_item_id){
+                        $spec                           =   GoodsSpecificationItemPrice::find($cart->goods_spec_item_id);
+                        if(($spec)){
+                            $cart->price            =   $spec->price;
+                            $cart->store           =   $spec->store;
+                        }
+                    }
                 }else{
                     $cart->status           =   -1;
                     $cart->save();
@@ -88,11 +109,20 @@ class CartController extends Controller
     /**
      * @throws \App\Exceptions\GoodsException
      */
-    protected function validateStore(){
-        $goodsSpecItemId                =   request()->item_id;
-        $goodsId                        =   request()->goods_id;
-        $num                            =   request()->num;
-        $this->goodsModel               =   Goods::findOrFail(request()->goods_id);
+    protected function validateStore($cart = null){
+        if($cart){
+            $goodsSpecItemId                =   $cart->goods_spec_item_id;
+            $goodsId                        =   $cart->goods_id;
+            $num                            =   request()->num;
+
+        }else{
+            $goodsSpecItemId                =   request()->item_id;
+            $goodsId                        =   request()->goods_id;
+            $num                            =   request()->num;
+
+        }
+
+        $this->goodsModel               =   Goods::findOrFail($goodsId);
         $this->goodsSpecItemPrices      =   GoodsSpecificationItemPrice::where('goods_id',$goodsId)->get();
         if(empty($goodsSpecItemId) && count($this->goodsSpecItemPrices) > 0){
             throw new GoodsException(trans('message.spec_item_id_required'));
@@ -112,14 +142,27 @@ class CartController extends Controller
 
                 $this->cart                             =   Cart::where(['user_id'=>Auth::id(),'goods_id'=>$goodsId,'goods_spec_item_id'=>$goodsSpecItemId])->first();
                 $this->newNum                           =   $this->cart ? $this->cart->num + $num : $num;
-                if($this->newNum > $this->inputGoodsSpecItemPrice->store){
-                    throw new GoodsException(trans('message.store_not_enough',['attribute'=>$this->inputGoodsSpecItemPrice->store]));
+                if($cart){
+                    if($num > $this->inputGoodsSpecItemPrice->store){
+                        throw new GoodsException(trans('message.store_not_enough',['attribute'=>$this->inputGoodsSpecItemPrice->store]),$this->inputGoodsSpecItemPrice->store);
+                    }
+                }else{
+                    if($this->newNum > $this->inputGoodsSpecItemPrice->store){
+                        throw new GoodsException(trans('message.store_not_enough',['attribute'=>$this->inputGoodsSpecItemPrice->store]),$this->inputGoodsSpecItemPrice->store);
+                    }
                 }
+
             }else{
                 $this->cart                             =   Cart::where(['user_id'=>Auth::id(),'goods_id'=>$goodsId])->first();
                 $this->newNum                           =   $this->cart ? $this->cart->num + $num : $num;
-                if($this->newNum > $this->goodsModel->store){
-                    throw new GoodsException(trans('message.store_not_enough',['attribute'=>$this->goodsModel->store]));
+                if($cart){
+                    if($num > $this->goodsModel->store){
+                        throw new GoodsException(trans('message.store_not_enough',['attribute'=>$this->goodsModel->store]),$this->goodsModel->store);
+                    }
+                }else{
+                    if($this->newNum > $this->goodsModel->store){
+                        throw new GoodsException(trans('message.store_not_enough',['attribute'=>$this->goodsModel->store]),$this->goodsModel->store);
+                    }
                 }
             }
 
@@ -154,13 +197,16 @@ class CartController extends Controller
                 }
                 $this->cart->goods_spec_item_id  =   $goodsSpecItemId;
                 $this->cart->goods_spec_item_name=   $spec->name;
+                $this->cart->price                  =   $spec->price;
+            }else{
+                $this->cart->price                  =   $goods->price;
             }
 
             $this->cart->goods_name             =   $goods->name;
             $this->cart->num                    =   $num;
             $this->cart->user_id                =   Auth::id();
             $this->cart->cover                  =   $goods->cover;
-            $this->cart->price                  =   $goods->price;
+
             $this->cart->save();
         }
         return $this->respond(['data'=>$this->cart]);
@@ -184,11 +230,17 @@ class CartController extends Controller
 
     public function submit(){
         $list                                   =    Cart::where(['is_check'=>1,'status'=>1, 'user_id'=>Auth::id()])->get();
-
+        $this->setTitle(trans('html.cart'));
         if (count($list) > 0){
             foreach ($list as $key=>$cart){
                 $goods                  =   Goods::find($cart->goods_id);
                 $cart->price            =   $goods->price;
+                if($cart->goods_spec_item_id){
+                    $spec                           =   GoodsSpecificationItemPrice::find($cart->goods_spec_item_id);
+                    if(($spec)){
+                        $cart->price            =   $spec->price;
+                    }
+                }
                 $list->offsetSet($key,$cart);
             }
         }
@@ -200,5 +252,11 @@ class CartController extends Controller
     public function deleteChecked(){
         Cart::where(['user_id'=>Auth::id(),'is_check'=>Cart::CHECKED])->delete();
         return $this->success();
+    }
+    public function total(){
+        $where['user_id']               =   Auth::id();
+        $count                          =   $this->model->where($where)->count();
+        $this->data                     =   $count;
+        return $this->respond($this->data);
     }
 }

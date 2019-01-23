@@ -5,7 +5,7 @@
                 <div class="user">
                     <div class="avatar">
                         <img v-if="item.avatar" :src="item.avatar">
-                        <img :src="defaultAvatar"/>
+                        <img v-else :src="defaultAvatar"/>
                     </div>
                     <div class="nick">
                         {{item.nick}}

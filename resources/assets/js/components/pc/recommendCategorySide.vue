@@ -8,7 +8,7 @@
                 <div class="swiper-container category-slider">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide" v-for="str in ads" :style="{ backgroundColor: str.background_color }">
-                            <a :href="str.link"><img :src="str.code" ></a>
+                            <a :href="str.link" target="_blank"><img :src="str.code" ></a>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
             </p>
             <ul>
                <li v-for="item in list">
-                    <a :href="getCategoryRoute(item.id)">
+                    <a :href="getCategoryRoute(item.id)" target="_blank">
                         <p class="icon">
                             <img :src="item.icon">
                         </p>

@@ -10,12 +10,12 @@
 
                 <template v-if="list.length > 0">
                     <div class="item" v-for="item in list">
-                        <a :href="goodsRoute(item.id)">
+                        <a :href="goodsRoute(item.id)" target="_blank">
                             <div class="cover">
                                 <img :src="item.cover">
                             </div>
                             <div class="price">
-                                <span>{{$t('goods.$')}}:{{item.price}}</span>
+                                <span>{{$t('goods.$')}}{{item.price}}</span>
                             </div>
                             <div class="name">
                                 <p>{{item.name}}</p>

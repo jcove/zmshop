@@ -66,7 +66,11 @@
                 form: {
                     nick: '',
                     mobile: '',
-                    avatar: ''
+                    avatar: '',
+                    email: '',
+                    gender: '',
+                    birthday: '',
+                    name: ''
                 },
                 fileUrl: config.fileApi,
                 headers: {'X-Requested-With': 'XMLHttpRequest'},
@@ -79,9 +83,18 @@
             }
         },
         created() {
-            this.form = this.user;
+            this.setForm(this.user)
         },
         methods: {
+            setForm(form){
+              this.form.nick = form.nick;
+                this.form.mobile = form.mobile;
+                this.form.avatar = form.avatar;
+                this.form.email = form.email;
+                this.form.gender = form.gender
+                this.form.birthday = form.birthday;
+                this.form.name = form.name;
+            },
             handleAvatarSuccess(res, file) {
                 this.form.avatar = URL.createObjectURL(file.raw);
                 if (res) {

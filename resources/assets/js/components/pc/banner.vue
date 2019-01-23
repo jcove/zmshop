@@ -1,6 +1,6 @@
 <template v-if="ad">
     <div class="banner container" v-if="ad">
-        <a :href="ad.link">
+        <a :href="ad.link" target="_blank">
             <img :src="ad.code">
         </a>
     </div>

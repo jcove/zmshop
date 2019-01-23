@@ -4,7 +4,7 @@
         <div class="list" v-loading="loading">
             <ul>
                <li class="item" v-for="item in list">
-                   <a :href="getRoute(item.id)">{{item.name}}</a>
+                   <a :href="getRoute(item.id)" target="_blank">{{item.name}}</a>
                </li>
             </ul>
         </div>

@@ -28,6 +28,7 @@ class CreateOrderGoodsTable extends Migration
             $table->tinyInteger('is_shipping')->default(0);
             $table->tinyInteger('delivery_id')->default(0);
             $table->integer('country')->default(0);
+            $table->tinyInteger('is_return')->default(0);
             $table->timestamps();
         });
     }

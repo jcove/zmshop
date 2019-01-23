@@ -31,4 +31,9 @@ orderApi.pay = function (id) {
     api.setPath('order/pay');
     return api.get(id);
 };
+orderApi.cancel = function (id) {
+    api.setPath('order/cancel/'+id);
+
+    return api.post(null);
+};
 export default orderApi;

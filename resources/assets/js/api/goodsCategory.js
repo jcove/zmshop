@@ -17,6 +17,10 @@ goodsCategoryApi.children=function(id){
     api.setPath(goodsCategoryApi.path+'/'+'children');
     return api.get(id)
 };
+goodsCategoryApi.tree = function () {
+    api.setPath(goodsCategoryApi.path + '/tree')
+    return api.list(null);
+}
 goodsCategoryApi.brand=function(id){
     api.setPath(goodsCategoryApi.path+'/'+'brand');
     return api.get(id)

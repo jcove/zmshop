@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ParamException;
 use App\Http\Requests\GoodsCategoryRequest;
 use App\Models\Brand;
 use App\Models\Goods;
@@ -162,5 +163,13 @@ class GoodsCategoryController extends Controller
         $this->data['list']                     =   $list;
     }
 
-
+    /**
+     * @throws ParamException
+     */
+    protected function beforeDelete(){
+        $children                               =   GoodsCategory::getChildren($this->model->id);
+        if(count($children)) {
+            throw new ParamException(trans("html.common.must_delete_children"));
+        }
+    }
 }

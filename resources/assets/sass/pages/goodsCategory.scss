@@ -118,7 +118,8 @@
     .cover{
       height: 200px;
       img{
-        max-width:100%;
+        width:200px;
+        height:200px;
       }
     }
     .price{
@@ -129,6 +130,14 @@
     }
     .name{
       padding: 5px;
+      p{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 50px;
+        padding: 5px 0;
+        line-height: 25px;
+
+      }
     }
   }
 }

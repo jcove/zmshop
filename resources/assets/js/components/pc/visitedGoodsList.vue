@@ -2,18 +2,18 @@
     <div class="visited-goods-list">
         <ul>
             <li v-for="goods in list">
-                <a :href="getRoute(goods.id)">
+                <a :href="getRoute(goods.id)" target="_blank">
                     <div class="cover">
                         <img :src="goods.cover">
                     </div>
                 </a>
-                <a :href="getRoute(goods.id)">
+                <a :href="getRoute(goods.id)" target="_blank">
                 <p class="name">
                     {{goods.name}}
                 </p>
                 </a>
                 <p class="price">
-                    {{goods.price}}
+                    {{$t('goods.$')}}{{goods.price}}
                 </p>
             </li>
         </ul>
@@ -53,7 +53,7 @@
         li{
             width:237px;
             float:left;
-            height: 260px;
+            height: 300px;
             .cover{
                 img{
                     width: 200px;
@@ -64,6 +64,9 @@
             }
             .name{
                 text-align: center;
+                height: 60px;
+                padding: 5px;
+                overflow: hidden;
             }
             .price{
                 text-align:center;

@@ -14,7 +14,7 @@
                     </p>
 
                     <div class="tools">
-                        <a class="go-info" :href="getGoodsRoute(item.relation_goods_id)">
+                        <a class="go-info" :href="getGoodsRoute(item.relation_goods_id)" target="_blank">
                             {{$t('goods.go_info')}}
                         </a>
                         <a class="collect" href="javascript:void (0)" @click="collect">

@@ -16,15 +16,16 @@
 
 Route::get('address/region','UserAddressController@region');
 Route::group(['middleware'=>'common_data'],function ($route){
-    $route->get('/', 'IndexController@index')->middleware(['access_control']);
-    $route->get('/home', 'IndexController@index')->middleware(['access_control']);
+    $route->get('/', 'IndexController@index')->name('index.index')->middleware(['access_control']);
+    $route->get('/home', 'IndexController@index')->name('index.index')->middleware(['access_control']);
     Route::resource('goodsModelAttribute', 'GoodsModelAttributeController');
     Route::resource('brand', 'BrandController');
     Route::resource('goods', 'GoodsController');
 
 
     Route::resource('goodsModelSpecification', 'GoodsModelSpecificationController');
-    Route::resource('config', 'ConfigController');
+
+    Route::get('goodsCategory/tree', 'GoodsCategoryController@tree');
     Route::get('goodsCategory/brand/{id}','GoodsCategoryController@brand');
     Route::resource('goodsCategory', GoodsCategoryController::Class);
     Route::get('goodsCategory/children/{id}', 'GoodsCategoryController@children');
@@ -36,11 +37,20 @@ Route::group(['middleware'=>'common_data'],function ($route){
     Route::post('user/login', 'Auth\LoginController@login')->name('login');
     $route->get('password/forget', 'Auth\PasswordController@showForgetForm')->name('password.forgetForm');
     $route->get('order/success/{id}', 'OrderController@createSuccess')->name('order.success');
+
     Route::get('pay/success/{id}','PayController@paySuccess')->name('pay.success');
     Route::get('pay/cancel/{id}','PayController@cancel')->name('pay.cancel');
+    Route::get('pay/order/{id}','PayController@payOrder')->name('pay.order');
+    Route::any('pay/notify','PayController@notification')->name('pay.order');
+    Route::any('pay/return','PayController@return')->name('pay.order');
     $route->get('order/pay/{id}','OrderController@getPay');
+    $route->post('order/cancel/{id}','OrderController@cancel')->name('order.cancel');
+    $route->get('order/express/{id}','OrderController@express')->name('order.express');
     Route::resource('returnGoods', 'ReturnGoodsController');
+    Route::get('returnGoods/check', 'ReturnGoodsController@check');
+    Route::resource('article/category', 'ArticleCategoryController');
     Route::resource('article', 'ArticleController');
+    Route::put('returnGoods/send/{id}', 'ReturnGoodsController@send');
 });
 
 Route::group(['middleware'=>['auth']],function ($route){
@@ -55,19 +65,23 @@ Route::group(['middleware'=>['auth']],function ($route){
     Route::get('order/{id}','OrderController@show');
     $route->delete('cart/checked','CartController@deleteChecked');
     $route->delete('cart/{id}','CartController@destroy');
+    $route->get('cart/total','CartController@total');
     $route->post('password/modify', 'Auth\PasswordController@modify');
-    $route->put('user/{id}','UserController@update')->middleware('filter_image');
+    $route->put('user','UserController@update')->middleware('filter_image');
     Route::get('caseHistory/check', 'CaseHistoryController@check')->name('caseHistory.check');
     Route::resource('caseHistory', 'CaseHistoryController');
     $route->get('collection/check/{goodsId}','CollectionController@check')->name('collection.check');
     Route::get('shipping/fee', 'FreightTemplateController@fee');
+    $route->put('delivery/confirm/{id}','DeliveryController@confirm')->name('delivery.confirm');
 
 });
 
 Route::group(['middleware'=>['common_data','auth']],function ($route){
     Route::get('user/my', 'UserController@my')->name('user.my');
+    Route::get('user/center', 'UserController@my')->name('user.center');
     Route::get('user/logout', 'Auth\LoginController@logout')->name('user.logout');
     Route::post('cart', 'CartController@add');
+    Route::put('cart/{id}', 'CartController@update');
     Route::get('cart','CartController@index')->name('cart.index');
     Route::get('order','OrderController@index')->name('order.index');
     Route::resource('address', 'UserAddressController');
@@ -109,3 +123,4 @@ Route::resource('country', 'CountryController');
 Route::get('freight/fee', 'FreightTemplateController@getShippingFee');
 Route::resource('freightTemplate', 'FreightTemplateController');
 Route::get('goods/rx/check','GoodsController@checkRx');
+Route::get('config', 'ConfigController@json');

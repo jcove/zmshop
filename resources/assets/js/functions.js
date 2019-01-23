@@ -14,3 +14,7 @@ window.deleteCollection = function(id) {
         }
     });
 };
+window.clearLanguage=function(){
+    localStorage.removeItem('lang');
+    location.href= window.siteDomain;
+};

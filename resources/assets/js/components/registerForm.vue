@@ -13,30 +13,31 @@
       { required: true, message: '请输入手机号', trigger: 'blur' },
       { type: 'tel', message: '请输入正确的手机号', trigger: ['blur', 'change'] }
     ]">
-                <el-input v-model="form.mobile" style="width:220px " type="tel"
+                <el-input v-model="form.mobile" style="width:270px " type="tel"
                           :disabled="fields.mobile.disabled"></el-input>
             </el-form-item>
             <el-form-item label="验证码" label-width="120px" :style="{display:fields.captcha.display}">
-                <el-input v-model="form.captcha" style="width:110px;float:left" @blur="captchaBlur"></el-input>
-                <div class="captch" style="float:left">
+                <el-input v-model="form.captcha" style="width:160px;float:left" @blur="captchaBlur"></el-input>
+                <div class="captch" style="float:left;height: 40px">
                     <img class="thumbnail captcha" src="/captcha/flat" onclick="this.src='/captcha/flat?'+Math.random()"
                          style="width:110px;height:40px">
                 </div>
 
             </el-form-item>
             <el-form-item label="短信验证码" label-width="120px" :style="{display:fields.smsCode.display}">
-                <el-input v-model="form.sms_code" style="width:220px "></el-input>
+                <el-input v-model="form.sms_code" style="width:120px " @keyup.enter.native="verifyCode"></el-input>
+                <el-button type="success"  @click="sendSms" style="width: 150px;">{{sendCodeLabel}}</el-button>
             </el-form-item>
             <el-form-item :label="$t('user.nick')" label-width="120px" :style="{display:fields.nick.display}">
                 <el-input v-model="form.nick" style="width:220px "></el-input>
             </el-form-item>
 
             <el-form-item :label="$t('user.password')" label-width="120px" :style="{display:fields.password.display}">
-                <el-input v-model="form.password" style="width:220px " type="password"></el-input>
+                <el-input v-model="form.password" style="width:220px " type="password" @keyup.enter.native="submit"></el-input>
             </el-form-item>
             <el-form-item :label="$t('user.password_confirmation')" label-width="120px"
                           :style="{display:fields.confirmPassword.display}">
-                <el-input v-model="form.password_confirmation" style="width:220px " type="password"></el-input>
+                <el-input v-model="form.password_confirmation" style="width:220px " type="password" @keyup.enter.native="submit"></el-input>
             </el-form-item>
 
             <el-form-item label="" label-width="120px" :style="{display:fields.agreement.display}">
@@ -79,6 +80,7 @@
                 active: 1,
                 formDisplay: 'block',
                 registeredDisplay: 'none',
+                sendCodeLabel:that.$t('user.get_sms_code'),
                 form: {
                     mobile: '',
                     captcha: '',
@@ -151,7 +153,6 @@
                         this.requestting = true;
                         captchaApi.verify(value).then(response => {
                                 that.requestting = false;
-                                that.sendSms();
                             },
                             error => {
                                 that.requestting = false;

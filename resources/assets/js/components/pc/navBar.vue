@@ -11,7 +11,7 @@
                     </a>
                 </li>
                 <li class="nav-item" v-for="item in navs">
-                    <a :href="item.url">{{item.name}}</a>
+                    <a :href="item.url" target="_blank">{{item.name}}</a>
                 </li>
             </ul>
             <nav-category-tree :data="categories" :show="show"></nav-category-tree>

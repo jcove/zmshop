@@ -8,7 +8,7 @@
                 <template v-for="(item,index) in list">
                     <template v-if="index < 6">
                         <li @mouseenter="mouseOver(index)" v-bind:class="{ active:item.active }">
-                            <p>{{item.name}}</p>
+                            <p>{{item.name}}{{$t('index.category_box.recommend')}}</p>
                         </li>
                     </template>
 
@@ -21,12 +21,12 @@
             <ul v-loading="goodsLoading">
                 <template v-for="(item,index) in goods">
                     <li v-if="index < 6">
-                        <a :href="'goods/'+item.id">
+                        <a :href="'goods/'+item.id" target="_blank">
                             <div class="cover">
                                 <img class="img-responsive" :src="item.cover"/>
                             </div>
                             <p class="name">{{item.name}}</p>
-                            <p class="price">{{item.price}}/{{item.unit}}</p>
+                            <p class="price">{{$t('goods.$')}}{{item.price}}/{{item.unit}}</p>
                         </a>
                     </li>
                 </template>
@@ -44,7 +44,7 @@
         data() {
             return {
                 list: [
-                    {name: '推荐药品分类', active: true}
+                    {name: '推荐分类', active: true}
                 ],
                 goods: [],
                 goodsGroup: [],
@@ -168,7 +168,7 @@
             border-top: 0;
             border-color: #e8e8e8;
             width: 1134px;
-            height: 206px;
+            height: 218px;
             ul {
                 height: 206px;
                 li {
@@ -177,7 +177,9 @@
                     .cover {
                         img {
                             height: 140px;
-                            width: 189px;
+                            width: 140px;
+                            display: block;
+                            margin-left: auto;
                             transition: all 0.4s ease-out 0s;
                             -ms-transition: all 0.4s ease-out 0s;
                             -webkit-transition: all 0.4s ease-out 0s;
@@ -193,9 +195,10 @@
                         line-height: 40px;
                     }
                     .name {
-                        white-space: nowrap;
                         overflow: hidden;
-                        text-overflow: ellipsis;
+                        font-size: 12px;
+                        height: 34px;
+                        padding: 0 5px;
                     }
                     :hover{
                         .cover{

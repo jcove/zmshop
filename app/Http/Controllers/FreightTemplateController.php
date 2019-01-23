@@ -51,10 +51,10 @@ class FreightTemplateController extends Controller
         $rule                           =   [
           //  'region_id'             =>  'exists:regions,id',
             'country_id'            =>  'required|exists:countries,id',
-            'first_unit'        =>    'required',
-            'first_money'       =>    'required',
-            'continue_unit'     =>  'required',
-            'continue_money'    =>  'required'
+            'first_unit'        =>    'required|numeric|min:1',
+            'first_money'       =>    'required|numeric|min:1',
+            'continue_unit'     =>  'required|numeric|min:1',
+            'continue_money'    =>  'required|numeric|min:1'
         ];
         foreach ($regions as $region){
             Validator::make($region,$rule)->validate();
@@ -73,10 +73,10 @@ class FreightTemplateController extends Controller
         $rule                           =   [
           //  'region_id'             =>  'required|exists:regions,id',
             'country_id'            =>  'required|exists:countries,id',
-            'first_unit'        =>    'required',
-            'first_money'       =>    'required',
-            'continue_unit'     =>  'required',
-            'continue_money'    =>  'required'
+            'first_unit'        =>    'required|numeric|min:1',
+            'first_money'       =>    'required|numeric|min:1',
+            'continue_unit'     =>  'required|numeric|min:1',
+            'continue_money'    =>  'required|numeric|min:1'
         ];
         foreach ($regions as $region){
             Validator::make($region,$rule)->validate();

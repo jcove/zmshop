@@ -34,9 +34,17 @@
                     @lang('html.customer_service_phone')
                 </h3>
                 <p class="phone">
+                    @lang('html.china_phone')
+                </p>
+                <p class="phone">
                     {{config('shop.customer_service_phone')}}
                 </p>
-
+                <p class="phone">
+                    @lang('html.hk_phone')
+                </p>
+                <p class="phone">
+                    {{config('shop.customer_service_hk_phone')}}
+                </p>
             </div>
         </div>
     </div>

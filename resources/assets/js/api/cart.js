@@ -7,12 +7,22 @@ const cartApi = {
     deleteChecked:Function,
     checkAll:Function
 };
+cartApi.list=function(query){
+    api.setPath('cart');
+    return api.list(query)
+}
+cartApi.total=function(){
+    api.setPath('cart/total');
+    return api.list(null)
+}
 cartApi.addCart=function (query) {
-
     api.setPath('cart');
     return api.post(query)
 };
-
+cartApi.save=function (query) {
+    api.setPath('cart');
+    return api.save(query)
+};
 cartApi.check=function (id) {
     api.setPath('cart/check/'+id);
     return api.post(null)

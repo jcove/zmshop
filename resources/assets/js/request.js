@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {Message} from 'element-ui'
 import config from './config'
+import { message } from './methods'
 import i18n from './lang/index'
 
 // create an axios instance
@@ -28,42 +29,29 @@ service.interceptors.response.use(
         return response.data
     },
     error => {
-        console.log(error);
         if (error.response.status === 401) {
-            Message({
-                message:i18n.t('common.please_login'),
+            message({
+                message: i18n.t('common.please_login'),
                 type: 'error',
-                duration: 1.5 * 1000,
-                showClose:true,
-                onClose:function () {
-                    location.href = config.baseApi + '/user/login?redirect='+encodeURI(location.href);
-                }
-            });
+                redirect: config.baseApi + '/user/login?redirect='+encodeURI(location.href)
+            })
 
 
             return Promise.reject(error);
         }
         if (error.response.status === 422) {
-            const keys = Object.keys(error.response.data.errors)
             const errors = error.response.data.errors;
-            var err =   '';
-            keys.forEach(function(key) {
-               err+='<p>'+ errors[key][0] + '</p>'
-            });
-            Message({
-                message: err,
-                type: 'error',
-                dangerouslyUseHTMLString: true,
-                duration: 3 * 1000,
-                showClose:true
-            });
+            message({
+                message: errors,
+                type: 'error'
+            })
             return ;
         }
         if (error.response.status !== 200 && error.response.status !== 404) {
-            Message({
+
+            message({
                 message: error.response.data.message,
-                type: 'error',
-                duration: 3 * 1000
+                type: 'error'
             })
             return Promise.reject(error)
         }

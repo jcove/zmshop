@@ -62,12 +62,12 @@
                     @if(count($list->items()) > 0)
                         @foreach($list->items() as $item)
                             <div class="item">
-                                <a href="{{route('goods.show',['id'=>$item->id])}}">
+                                <a href="{{route('goods.show',['id'=>$item->id])}}"   target="_blank">
                                     <div class="cover">
                                         <img src="{{$item->cover}}">
                                     </div>
                                     <div class="price">
-                                        <span>@lang('html.goods.$'):{{$item->price}}</span>
+                                        <span>@lang('html.goods.$'){{$item->price}}</span>
                                     </div>
                                     <div class="name">
                                         <p>{{$item->name}}</p>
@@ -89,12 +89,13 @@
 @endsection
 @section('script')
     <script>
+        var params                  =   JSON.parse('{!! json_encode($params) !!}');
         $(function () {
             var url                     =   '{{url()->current()}}';
-            var params                  =   JSON.parse('{!! json_encode($params) !!}');
+
             $('.brand').on('click',function () {
                 params.brand            =   $(this).data('id')+':'+$(this).data('value');
-                location.href           =   url+'?'+'sort='+params.sort+'&brand='+params.brand+'&attr='+(params.attr ? prams.attr : '')+'&category_id='+params.category_id;
+                location.href           =   url+'?'+setQuery();
             })
             
             $('.attr').on('click',function () {
@@ -127,8 +128,21 @@
                 });
                 str                     =   arr.join(',');
                 params.attr             =   str;
-                location.href           =   url+'?'+'sort='+params.sort+'&brand='+params.brand+'&attr='+params.attr+'&category_id='+params.category_id;
+                location.href           =   url+ '?'+setQuery()
             })
         })
+
+        function setQuery() {
+            const keys = Object.keys(params);
+            var str = '';
+            keys.forEach(function (key) {
+                if(params[key]!==null){
+                    str += key + '=' + params[key] + '&'
+                }
+
+                console.log(params[key])
+            })
+            return str;
+        }
     </script>
 @endsection

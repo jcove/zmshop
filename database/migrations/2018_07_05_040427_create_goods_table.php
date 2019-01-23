@@ -26,7 +26,7 @@ class CreateGoodsTable extends Migration
             $table->integer('is_hot')->default(0);
             $table->integer('is_new')->default(0);
             $table->integer('is_recommend')->default(0);
-            $table->integer('category')->default(0);
+            $table->integer('category_id')->default(0);
             $table->integer('view')->default(0);
             $table->integer('model_id')->default(0);
             $table->integer('merchant_id')->default(0);
@@ -35,8 +35,9 @@ class CreateGoodsTable extends Migration
             $table->integer('brand_id')->default(0);
             $table->tinyInteger('rx')->default(0);
             $table->tinyInteger('status')->default(1);
-            $table->integer('country')->default(0);
             $table->integer('weight')->default(0);
+            $table->tinyInteger('is_special')->default(0);
+            $table->integer('freight_template_id')->default(0);
             $table->timestamps();
         });
     }

@@ -26,6 +26,7 @@ class CreateCommentsTable extends Migration
             $table->tinyInteger('service_rank')->default(5);
             $table->integer('order_id')->default(0);
             $table->tinyInteger('is_anonymous')->default(0);
+            $table->string('avatar')->default('');
             $table->timestamps();
         });
     }

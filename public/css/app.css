@@ -13483,7 +13483,7 @@ ul li {
   color: #0095ff;
 }
 
-.top-menu-tools ul .user-login-register,
+.top-menu-tools ul .active,
 .top-menu-tools ul .sis {
   background-color: white;
 }
@@ -13731,7 +13731,7 @@ ul li {
 
 .footer .container .shop-info .tel .phone {
   text-align: center;
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .footer .title {
@@ -13989,6 +13989,18 @@ ul li {
   padding: 5px;
 }
 
+.goods-detail .detail .description .ql-video,
+.goods-detail .detail .instruction .ql-video {
+  width: 900px;
+  height: 506px;
+}
+
+.goods-detail .detail .description .ql-align-center img,
+.goods-detail .detail .instruction .ql-align-center img {
+  display: block;
+  margin: auto;
+}
+
 .goods-name {
   white-space: nowrap;
   overflow: hidden;
@@ -14241,7 +14253,8 @@ ul li {
 }
 
 .cate-goods-list .item .cover img {
-  max-width: 100%;
+  width: 200px;
+  height: 200px;
 }
 
 .cate-goods-list .item .price {
@@ -14254,6 +14267,14 @@ ul li {
 
 .cate-goods-list .item .name {
   padding: 5px;
+}
+
+.cate-goods-list .item .name p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 50px;
+  padding: 5px 0;
+  line-height: 25px;
 }
 
 .my-collections {
@@ -14300,6 +14321,12 @@ ul li {
 .my-collections .list ul li {
   float: left;
   padding: 15px 5px;
+  border-top: 1px solid #35A0FC;
+  width: 815px;
+}
+
+.my-collections .list ul li:first-child {
+  border-top: none;
 }
 
 .my-collections .list ul li .cover {
@@ -14320,7 +14347,6 @@ ul li {
   float: left;
   text-align: center;
   overflow: hidden;
-  line-height: 100px;
 }
 
 .my-collections .list ul li .name {

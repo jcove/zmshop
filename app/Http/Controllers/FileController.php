@@ -30,7 +30,7 @@ class FileController extends Controller
                 $fileModel                      =   new File();
                 $file                           =   $fileModel->getByMd5($md5);
                 if($file){
-                    return $this->respond($file);
+                    return response()->json($file);
                 }else{
                     $path = $request->file->store('images');
                     $file                           =   new File();
@@ -41,14 +41,14 @@ class FileController extends Controller
                     $file->md5                      =   $md5;
                     $file->size                     =   $request->file->getSize();
                     $file->save();
-                    return $this->respond($file);
+                    return response()->json($file);
                 }
 
             }else{
-                return $this->fail('文件无效',500);
+                return response('文件无效',500);
             }
         }else{
-            return $this->fail('请选择上传的文件',500);
+            return response('请选择上传的文件',500);
         }
     }
 

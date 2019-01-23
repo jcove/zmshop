@@ -21,6 +21,10 @@ class CreateCartsTable extends Migration
             $table->integer('goods_spec_id')->default(0);
             $table->integer('num')->default(0);
             $table->string('cover')->default('');
+            $table->tinyInteger('status')->default(1);
+            $table->decimal('price',10,2)->default(0);
+            $table->string('goods_spec_item_name')->default('');
+            $table->string('goods_name')->default('');
             $table->timestamps();
         });
     }

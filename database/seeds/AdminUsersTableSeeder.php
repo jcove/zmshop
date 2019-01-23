@@ -11,10 +11,10 @@ class AdminUsersTableSeeder extends Seeder
      */
     public function run()
     {
-        \Jcove\Admin\Models\AdminUser::create([
-        'username'  => 'admin',
-        'password'  => bcrypt('admin'),
-        'name'      => 'Administrator',
-    ]);
+//        \Jcove\Admin\Models\AdminUser::create([
+//        'username'  => 'admin',
+//        'password'  => bcrypt('12345678'),
+//        'name'      => 'Administrator',
+//    ]);
     }
 }

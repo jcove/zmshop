@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('nick')->default('');
             $table->string('name')->default('');
             $table->string('email')->default('');
+            $table->tinyInteger('gender')->default(1);
             $table->date('birthday')->default('1970-01-01');
             $table->rememberToken();
             $table->timestamps();

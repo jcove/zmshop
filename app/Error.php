@@ -11,7 +11,10 @@ namespace App;
 class Error
 {
     const order_status_error                        =   200001;
+    const goods_not_choose                          =   200002;
+    const comment_content_not_null                  =   200003;
     const sms_error                                 =   100002;
+    const relation_data_error                       =   100003;
 
     //user
     const user_not_exist                            =   300003;

@@ -28,6 +28,21 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OrderCanceled' => [
             'App\Listeners\OrderCanceledListener',
         ],
+        'App\Events\DeliveryConfirmed' => [
+            'App\Listeners\DeliveryConfirmedListener',
+        ],
+        'App\Events\GoodsModelDeleting' => [
+            'App\Listeners\GoodsModelDeletingListener',
+        ],
+        'App\Events\GoodsModelDeleted' => [
+            'App\Listeners\GoodsModelDeletedListener',
+        ],
+        'App\Events\GoodsCategoryDeleting' => [
+            'App\Listeners\GoodsCategoryDeletingListener',
+        ],
+        'App\Events\BrandDeleting' => [
+            'App\Listeners\BrandDeletingListener',
+        ],
     ];
 
     /**

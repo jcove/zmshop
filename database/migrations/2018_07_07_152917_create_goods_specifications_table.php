@@ -18,6 +18,7 @@ class CreateGoodsSpecificationsTable extends Migration
             $table->integer('goods_id')->default(0);
             $table->integer('specification_id')->default(0);
             $table->string('specification_name')->default('');
+            $table->string('specification_value')->default('');
             $table->timestamps();
         });
     }

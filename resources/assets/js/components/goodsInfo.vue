@@ -59,7 +59,7 @@
         </div>
         <p class="info-item">
             <span>{{$t('goods.number')}}</span>
-            <el-input v-model="form.num" type="number" style="width:100px"></el-input>
+            <el-input v-model="form.num" type="number" min="1" style="width:100px" @change="numChange"></el-input>
             <el-button type="primary" @click="addCart()" :disabled="!this.can">{{$t('goods.add_cart')}}</el-button>
         </p>
         <el-dialog
@@ -169,7 +169,6 @@
         },
         watch:{
           region(n,o){
-              console.log(n)
               this.getFreight()
           }
         },
@@ -230,13 +229,30 @@
                             message: this.error,
                         });
                         return;
+                    }else {
+                        this.can = true
                     }
 
-                }
+                }else{
+                    if (this.form.num > this.goods.store) {
 
+                        this.can = false;
+                        this.error = this.$t('goods.store_out');
+                        this.$message.error({
+                            message: this.error,
+                        });
+                        return;
+                    }else {
+                        this.can = true
+                    }
+                }
+            },
+            numChange(value){
+               this.initPrice()
             },
             getFreight() {
-                freightApi.fee({goods_id: this.goods.id,region_id:this.region.region.id,country_id:this.region.country.id}).then(response =>{
+                var regionId = this.region.region ? this.region.region.id : ''
+                freightApi.fee({goods_id: this.goods.id,region_id:regionId,country_id:this.region.country.id}).then(response =>{
                     if(response.code && response.code > 0){
                         this.can = false;
                         this.shipping_fee = this.$t('region.can_not_shipping');
@@ -276,22 +292,29 @@
                         console.log(that.region.country)
                     }
                 })
+                this.region.region = null
                 if (value === 1) {
                     this.regionShow= 'inline-block';
-
                     regionApi.children(0).then(response => {
                         that.province = response.data;
                     });
                 }else {
                     this.regionShow= 'none';
                 }
-                this.getFreight()
             },
             provinceChange(value) {
                 const that = this;
                 regionApi.children(value).then(response => {
                     that.city = response.data;
                 });
+                this.province.forEach(function (item) {
+                    if(item.id === value){
+                        that.region.region = item
+                    }
+                })
+                this.temp.region_id = ''
+
+
 
             },
             cityChange(value){
@@ -301,10 +324,20 @@
                         that.region.region = item
                     }
                 })
-                this.getFreight()
+
             },
             confirm(){
+                if(this.region.country.id ===1){
+                    if(this.region.region === null){
+                        this.$message({
+                            message:this.$t('region.please_choose_pc'),
+                            type:'error'
+                        })
+                        return
+                    }
+                }
                 this.dialogVisible = false
+                this.getFreight()
             }
         }
     }

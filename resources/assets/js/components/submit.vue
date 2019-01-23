@@ -37,7 +37,9 @@
                             </div>
                             <div class="name float-left">
                                 <a :href="getGoodsRoute(goods.id)">
-                                    <p>{{goods.name}}</p>
+                                    <p>{{goods.name}} <template v-if="goods.goods_spec_item_name">
+                                        <span style="color: #35A0FC">{{goods.goods_spec_item_name}}</span>
+                                    </template></p>
                                 </a>
 
                                 <p v-if="goods.item">{{goods.item.name}}</p>
@@ -46,18 +48,17 @@
                                 {{goods.num}}
                             </div>
                             <div class="price float-left">
-                                {{$t('goods.$')}}{{goods.final_price}}
+                                <div> {{(new Number(goods.price)).toFixed(2)}} </div>
+                                <div class="promotion" v-if="group.id > 0">
+                                    {{$t('cart.promotion')}}:<span class="promotion-name">{{group.name}}</span>
+                                </div>
                             </div>
-
                             <div class="total float-left">
-                                {{$t('goods.$')}}{{getTotal(goods.num,goods.final_price)}}
+                                {{getTotal(goods.num,goods.price)}}
                             </div>
-
                         </div>
-
                     </template>
                 </div>
-
 
             </div>
         </div>
@@ -68,17 +69,28 @@
                 <!--</el-radio>-->
             <!--</template>-->
         <!--</div>-->
+        <div class="box" style="border:0px;margin-top: 20px">
+
+            <el-input
+                    type="textarea"
+                    :rows="2"
+                    :placeholder="$t('order.remark')"
+                    v-model="form.remark">
+            </el-input>
+        </div>
         <div class="total-box">
 
             <div class="choose float-left">
                 {{$t('cart.sub_num')}}<span class="num">{{chooseNum}}</span>{{$t('goods.unit')}}
+                {{$t('goods.$')}}{{goodsAmount}}
             </div>
             <div class="total float-left">
                 {{$t('region.shipping_fee')}}:{{$t('goods.$')}}{{shipping_fee}}
                 {{$t('cart.owe')}}:<span class="amount">{{$t('goods.$')}}{{total}}</span>
+                {{$t('cart.saved')}}{{$t('goods.$')}}{{promotion}}
             </div>
             <div class="settled float-right">
-                <el-button type="danger" size="medium" @click="submit" style="height: 40px;background-color: #d01b0d">{{$t('operate.submit_order')}}
+                <el-button type="danger" size="medium" @click="submit" style="height: 40px;background-color: #d01b0d" :disabled="!canSubmitOrder">{{$t('operate.submit_order')}}
 
                 </el-button>
             </div>
@@ -129,7 +141,12 @@
                     <el-form-item :label="$t('user.phone')">
                         <el-input v-model="addressForm.phone" style="width: 160px"></el-input>
                     </el-form-item>
-
+                    <el-form-item :label="$t('user.zip_code')">
+                        <el-input v-model="addressForm.zip_code" style="width: 160px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="">
+                        <el-checkbox v-model="addressForm.is_default">{{$t('user.is_default')}}</el-checkbox>
+                    </el-form-item>
                     <el-form-item size="large" label="" label-width="270px">
                         <el-button type="primary" @click="saveAddress">{{$t('common.save')}}</el-button>
                     </el-form-item>
@@ -145,6 +162,12 @@
                         prop="consignee"
                         :label="$t('user.consignee')"
                         width="180">
+                    <template slot-scope="scope">
+                        {{ scope.row.consignee }}
+                        <template v-if="scope.row.is_default">
+                            <span style="color: red;border:1px solid red;font-size: 11px">{{$t('user.default')}}</span>
+                        </template>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="region"
@@ -248,12 +271,15 @@
                 all: false,
                 chooseNum: 0,
                 total: 0,
+                promotion: 0,
+                goodsAmount: 0,
                 address:null,
                 payments:[],
                 countries:[],
                 form:{
                     pay_code:'',
-                    address_id:0
+                    address_id:0,
+                    remark: ''
                 },
                 addressForm: {
                     consignee: '',
@@ -263,8 +289,10 @@
                     district: '',
                     address: '',
                     phone: '',
-                    is_default: 1
+                    is_default: 1,
+                    zip_code: ''
                 },
+                canSubmitOrder:true,
                 dialogVisible:false,
                 regionShow: 'display',
                 province: [],
@@ -293,7 +321,7 @@
         },
         methods: {
             getTotal(num, price) {
-                return Math.floor(price * num).toFixed(2);
+                return (new Number(price * num)).toFixed(2);
             },
             checkGoodsRx(){
                 var ids = ''
@@ -343,7 +371,8 @@
                         num: cart.num,
                         cover: cart.cover,
                         is_check: cart.is_check === 1,
-                        cart_id:cart.id
+                        cart_id:cart.id,
+                        goods_spec_item_name:cart.goods_spec_item_name
                     };
                     products.push(product);
                 });
@@ -354,35 +383,30 @@
                     console.log(this.total)
                 })
             },
-            handleNumChange(value) {
-
-            },
-            handelCartCheckChange(goods) {
-                this.computeTotal();
-                cartApi.check(goods.cart_id).then();
-            },
-            deleteCart(goods, gIndex, index) {
-
-            },
             computeTotal(){
                 if (this.cartGroup.length > 0) {
                     var total = 0;
                     this.chooseNum =0;
                     const that =this;
+                    var promotion = 0
                     this.cartGroup.forEach(function (group) {
+
                         if (group.products.length > 0) {
 
                             group.products.forEach(function (goods) {
                                 if(goods.is_check){
-                                    total +=goods.num*goods.final_price;
+                                    total +=goods.num*goods.price;
                                     that.chooseNum+=goods.num;
                                 }
 
                             });
                         }
+                        promotion+= group.promotion
                     })
+                    this.promotion = promotion;
+                    this.goodsAmount = (new Number(total)).toFixed(2);
                     total += this.shipping_fee;
-                    this.total = Math.floor(total).toFixed(2);
+                    this.total = (new Number(total-promotion)).toFixed(2);
                 }
             },
             getCountry(){
@@ -428,9 +452,18 @@
             },
             getShippingFee(){
               freightApi.shippingFee({address_id:this.form.address_id}).then(response => {
-                  this.shipping_fee = response.fee;
-                  this.computeTotal();
-                  console.log(this.total)
+                  if(response){
+                      this.shipping_fee = response.fee;
+                      this.computeTotal();
+                      this.canSubmitOrder = true
+                  }else{
+                      this.canSubmitOrder = false
+                      this.shipping_fee = 0;
+                  }
+
+              },error=>{
+                  this.canSubmitOrder = false
+                  this.shipping_fee = 0;
               })
             },
             countryChange(value) {
@@ -582,20 +615,28 @@
                         line-height: 40px;
                     }
                 }
+                .price{
+                    .promotion{
+                        .promotion-name{
+                            border:1px solid red;
+                            font-size: 11px;
+                            color:red;
+                        }
+                    }
+                }
                 .num, .price {
                     width: 140px;
-                    line-height: 120px;
                     text-align: center;
                 }
                 .total {
                     width: 140px;
-                    line-height: 120px;
+
                     text-align: center;
                 }
                 .tools {
                     width: 120px;
                     text-align: center;
-                    line-height: 120px;
+
                 }
             }
         }
@@ -620,6 +661,15 @@
             p {
                 text-align: center;
                 line-height: 30px;
+            }
+        }
+        .price{
+            .promotion{
+                .promotion-name{
+                    border:1px solid red;
+                    font-size: 11px;
+                    color:red;
+                }
             }
         }
         .num, .price {
@@ -648,14 +698,14 @@
         margin-top: 20px;
         text-align: center;
         .choose {
-            width: 140px;
-            margin-left: 600px;
+            width: 200px;
+            margin-left: 440px;
             .num{
                 color: #d01b0d;
             }
         }
         .total {
-            width: 240px;
+            width: 300px;
             .amount{
                 color: #d01b0d;
             }

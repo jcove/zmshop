@@ -14,4 +14,8 @@ goodsApi.checkRx=function (query) {
     api.setPath('goods/rx/check');
     return api.get(null,query)
 };
+goodsApi.get = function (id) {
+    api.setPath('goods')
+    return api.get(id,null)
+}
 export default goodsApi;

@@ -1,7 +1,7 @@
 <template>
     <el-carousel :interval="5000" arrow="never" height="447px">
         <el-carousel-item v-for="ad in list" :key="ad.id">
-            <a :href="ad.link" style="display: inline-block">
+            <a :href="ad.link" style="display: inline-block" target="_blank">
             <img :src="ad.code" style="width: 340px;height: 447px">
         </a>
         </el-carousel-item>

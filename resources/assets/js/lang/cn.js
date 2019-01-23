@@ -105,7 +105,7 @@ export const common ={
     index:'首页',
     all_goods:'所有商品分类',
     recommend:'推荐',
-    goods_category:'药品分类',
+    goods_category:'商品分类',
     please_select:'请选择',
     confirm: '确认'
 };

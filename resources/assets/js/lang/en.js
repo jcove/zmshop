@@ -178,10 +178,6 @@ export const goods_category = {
 export const brand= {
     relation_brand:'Other brands of the same category'
 };
-export const welcome={
-    title_cn:'木子国际药品',
-    title_en:'HSE-INT NETWORK LIMITID'
-};
 export const validation = {
     please_input_email:'Please input email',
     please_input_right_email:'Please input right email'

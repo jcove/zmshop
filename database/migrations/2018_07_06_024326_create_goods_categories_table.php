@@ -22,6 +22,7 @@ class CreateGoodsCategoriesTable extends Migration
             $table->integer('is_show')->default(1);
             $table->integer('order')->default(0);
             $table->string('cover')->default('');
+            $table->tinyInteger('is_recommend')->default(0);
             $table->timestamps();
         });
     }
